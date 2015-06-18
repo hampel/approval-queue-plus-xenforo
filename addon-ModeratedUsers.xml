@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="ModeratedUsers" title="Moderated Users Extra Info" version_string="0.1.0" version_id="1" url="" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="ModeratedUsers" title="Moderated Users Extra Info" version_string="1.0.0" version_id="2" url="" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
-  <admin_templates/>
-  <admin_template_modifications/>
+  <admin_templates>
+    <template title="moderatedusers_extra_details"><![CDATA[<xen:if is="{$user.location}"><xen:controlunit label="{xen:phrase location}:">{$user.location}</xen:controlunit></xen:if>]]></template>
+  </admin_templates>
+  <admin_template_modifications>
+    <modification template="user_moderated" modification_key="moderatedusersModeratedList" description="Add extra information to moderated user list" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<xen:controlunit label="{xen:phrase joined}:"><xen:datetime time="{$user.register_date}" /></xen:controlunit>]]></find>
+      <replace><![CDATA[$0
+			<xen:include template="moderatedusers_extra_details" />]]></replace>
+    </modification>
+  </admin_template_modifications>
   <code_events/>
-  <code_event_listeners/>
+  <code_event_listeners>
+    <listener event_id="load_class_view" execute_order="10" callback_class="ModeratedUsers_Listener_LoadClass" callback_method="load_viewadmin_user_moderated" active="1" hint="XenForo_ViewAdmin_User_Moderated" description="Extend XenForo_ViewAdmin_User_Moderated"/>
+  </code_event_listeners>
   <cron/>
   <email_templates/>
   <email_template_modifications/>
