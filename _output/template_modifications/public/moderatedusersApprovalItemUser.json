@@ -1,0 +1,9 @@
+{
+    "template": "approval_item_user",
+    "description": "Add extra information to moderated user queue",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "<xf:formrow label=\"{{ phrase('register_date') }}\">",
+    "replace": "<xf:if is=\"$user->Profile->location\">\n\t<xf:formrow label=\"{{ phrase('location') }}\">\n\t\t{{ $user->Profile->location }}\n\t</xf:formrow>\n</xf:if>\n\n<xf:formrow label=\"{{ phrase('register_date') }}\">"
+}
