@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template_modifications>
+  <modification type="public" template="approval_item_user" modification_key="moderatedusersApprovalItemUser" description="Add extra information to moderated user queue" execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[<xf:formrow label="{{ phrase('register_date') }}">]]></find>
+    <replace><![CDATA[<xf:if is="$user->Profile->location">
+	<xf:formrow label="{{ phrase('location') }}">
+		{{ $user->Profile->location }}
+	</xf:formrow>
+</xf:if>
+
+<xf:formrow label="{{ phrase('register_date') }}">]]></replace>
+  </modification>
+</template_modifications>
