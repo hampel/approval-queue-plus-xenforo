@@ -1,5 +1,8 @@
 {
-    "public/moderatedusersApprovalItemUser.json": {
-        "hash": "e2a69be826bc29d9bff20b1fedaccd19"
+    "public/approvalQueuePlusApprovalItemUser.json": {
+        "hash": "8f2633f1ecac77bf7ce8070b3cf3c05e"
+    },
+    "public/approvalQueuePlusCss.json": {
+        "hash": "59264008edd65b2318045916523756bd"
     }
 }
