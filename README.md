@@ -1,8 +1,8 @@
-Moderated Users Extra Info for XenForo 2.0
-==========================================
+Approval Queue Plus for XenForo 2.1
+===================================
 
-This XenForo 2.0 addon adds extra info to the Moderated Users approval queue.
+This XenForo 2.1 addon adds extra info to the entries in the Approval Queue to help make approval decisions easier.
 
-Currently it simply adds the Location field to the list of data displayed. 
+There is also an admin option to reverse the default sort order of the Approval Queue.
 
 By [Simon Hampel](https://twitter.com/SimonHampel).
