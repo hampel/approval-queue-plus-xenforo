@@ -1,0 +1,1 @@
+Change the default Approval Queue sort order - sorted by content date

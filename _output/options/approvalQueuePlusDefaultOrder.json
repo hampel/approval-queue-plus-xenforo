@@ -1,0 +1,12 @@
+{
+    "edit_format": "radio",
+    "edit_format_params": "asc={{ phrase('ascending') }}\ndesc={{ phrase('descending') }}",
+    "data_type": "string",
+    "sub_options": [],
+    "validation_class": "",
+    "validation_method": "",
+    "default_value": "asc",
+    "relations": {
+        "approvalQueuePlus": 1
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "option.approvalQueuePlusDefaultOrder.txt": {
+        "global_cache": false,
+        "version_id": 3000070,
+        "version_string": "3.0.0",
+        "hash": "c9f42e0120021e24e800d94ffeb9d660"
+    },
+    "option_explain.approvalQueuePlusDefaultOrder.txt": {
+        "global_cache": false,
+        "version_id": 3000070,
+        "version_string": "3.0.0",
+        "hash": "1f80e5a29931c5f9964d9d91d1d65fb2"
+    },
+    "option_group.approvalQueuePlus.txt": {
+        "global_cache": false,
+        "version_id": 3000070,
+        "version_string": "3.0.0",
+        "hash": "223c4985831b2c1aa2dd9ada31c605d6"
+    },
+    "option_group_description.approvalQueuePlus.txt": {
+        "global_cache": false,
+        "version_id": 3000070,
+        "version_string": "3.0.0",
+        "hash": "d503d1565b47ac8b347d5752efa42cc6"
+    }
+}
