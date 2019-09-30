@@ -1,17 +1,17 @@
 {
     "legacy_addon_id": "ModeratedUsers",
-    "title": "Moderated Users Extra Info",
-    "description": "Adds extra information to the Approval Queue for moderated users",
-    "version_id": 2000070,
-    "version_string": "2.0.0a",
+    "title": "Approval Queue Plus",
+    "description": "Adds extra information to the Approval Queue",
+    "version_id": 3000070,
+    "version_string": "3.0.0",
     "dev": "Simon Hampel",
     "dev_url": "https://bitbucket.org/hampel/",
     "faq_url": "",
-    "support_url": "https://bitbucket.org/hampel/moderated-users-xenforo/issues",
+    "support_url": "https://bitbucket.org/hampel/approval-queue-plus-xenforo/issues",
     "extra_urls": {
-        "Git Repository": "https://bitbucket.org/hampel/moderated-users-xenforo",
+        "Git Repository": "https://bitbucket.org/hampel/approval-queue-plus-xenforo/",
         "Twitter": "https://twitter.com/SimonHampel"
     },
     "require": [],
-    "icon": "fa-user-o"
+    "icon": "fa-check-circle"
 }

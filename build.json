@@ -1,0 +1,5 @@
+{
+	"exec": [
+		"mv -v _build/upload/src/addons/{addon_id}/*.md _build/"
+	]
+}
