@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<options/>
+<options>
+  <option option_id="approvalQueuePlusDefaultOrder" edit_format="radio" data_type="string">
+    <default_value>asc</default_value>
+    <edit_format_params>asc={{ phrase('ascending') }}
+desc={{ phrase('descending') }}</edit_format_params>
+    <relation group_id="approvalQueuePlus" display_order="1"/>
+  </option>
+</options>

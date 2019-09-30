@@ -1,13 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <template_modifications>
-  <modification type="public" template="approval_item_user" modification_key="moderatedusersApprovalItemUser" description="Add extra information to moderated user queue" execution_order="10" enabled="1" action="str_replace">
-    <find><![CDATA[<xf:formrow label="{{ phrase('register_date') }}">]]></find>
-    <replace><![CDATA[<xf:if is="$user->Profile->location">
-	<xf:formrow label="{{ phrase('location') }}">
-		{{ $user->Profile->location }}
-	</xf:formrow>
+  <modification type="public" template="PAGE_CONTAINER" modification_key="approvalQueuePlusPageContainerReverse" description="Changes the links to the approval queue to reverse the default sort order" execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[{{ link('approval-queue') }}]]></find>
+    <replace><![CDATA[<xf:if is="$xf.options.approvalQueuePlusDefaultOrder == 'asc'">
+	{{ link('approval-queue') }}
+<xf:else />
+	{{ link('approval-queue', null, {'order': 'content_date', 'direction': $xf.options.approvalQueuePlusDefaultOrder }) }}
 </xf:if>
+]]></replace>
+  </modification>
+  <modification type="public" template="approval_item_user" modification_key="approvalQueuePlusApprovalItemUser" description="Add extra information to moderated user queue" execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[<xf:set var="$messageHtml"><xf:trim>
 
-<xf:formrow label="{{ phrase('register_date') }}">]]></replace>
+	<xf:macro template="custom_fields_macros" name="custom_fields_view"
+		arg-type="users" arg-group="{{ null }}"
+		arg-set="{$user.Profile.custom_fields}"
+		arg-additionalFilters="{{ ['registration'] }}" />]]></find>
+    <replace><![CDATA[<xf:set var="$messageHtml"><xf:trim>
+
+	<div class="approvalQueuePlus">
+		<dl class="pairs pairs--columns pairs--fluidSmall">
+			<dt>{{ phrase('user_name') }}</dt>
+			<dd><a href="{{ link('members/edit', $user) }}">{{ $user->username }}</a><xf:if is="$xf.visitor.canBypassUserPrivacy() AND $user.email"> ({{ $user->email }})</xf:if></dd>
+		</dl>
+		<dl class="pairs pairs--columns pairs--fluidSmall">
+			<dt>{{ phrase('joined') }}</dt>
+			<dd><xf:date time="{{ $user->register_date }}" /></dd>
+		</dl>	
+		<dl class="pairs pairs--columns pairs--fluidSmall">
+			<dt>{{ phrase('last_activity') }}</dt>
+			<dd><xf:date time="{{ $user->last_activity }}" /></dd>
+		</dl>		
+		<xf:if is="$xf.visitor.canViewIps() AND $userIp">
+			<dl class="pairs pairs--columns pairs--fluidSmall">
+				<dt>{{ phrase('registration_ip') }}</dt>
+				<dd><a href="{{ link('misc/ip-info', null, {'ip': $userIp|ip}) }}" target="_blank">{$userIp|ip}</a></dd>
+			</dl>	
+		</xf:if>
+		<dl class="pairs pairs--columns pairs--fluidSmall">
+			<xf:if is="$user->Profile->location">
+				<dt>{{ phrase('location') }}</dt>
+				<dd>{{ $user->Profile->location }}</dd>
+			</xf:if>
+		</dl>
+	
+		<xf:macro template="custom_fields_macros" name="custom_fields_view"
+				  arg-type="users" arg-group="{{ null }}"
+				  arg-set="{$user.Profile.custom_fields}"
+				  arg-additionalFilters="{{ ['registration'] }}"
+				  arg-valueClass="pairs pairs--columns pairs--fluidSmall" />
+		
+	</div>]]></replace>
+  </modification>
+  <modification type="public" template="approval_queue.less" modification_key="approvalQueuePlusCss" description="Add custom CSS to approval queue" execution_order="10" enabled="1" action="preg_replace">
+    <find><![CDATA[#^(.*)$#sU]]></find>
+    <replace><![CDATA[$0
+
+.approvalQueuePlus
+{
+	.pairs
+	{
+		margin-bottom: 5px;
+	}
+}]]></replace>
   </modification>
 </template_modifications>

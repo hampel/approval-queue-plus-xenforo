@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phrases/>
+<phrases>
+  <phrase title="option.approvalQueuePlusDefaultOrder" version_id="3000070" version_string="3.0.0"><![CDATA[Default Queue Order]]></phrase>
+  <phrase title="option_explain.approvalQueuePlusDefaultOrder" version_id="3000070" version_string="3.0.0"><![CDATA[Change the default Approval Queue sort order - sorted by content date]]></phrase>
+  <phrase title="option_group.approvalQueuePlus" version_id="3000070" version_string="3.0.0"><![CDATA[Approval Queue Plus]]></phrase>
+  <phrase title="option_group_description.approvalQueuePlus" version_id="3000070" version_string="3.0.0"><![CDATA[Modifications to the Approval Queue]]></phrase>
+</phrases>
