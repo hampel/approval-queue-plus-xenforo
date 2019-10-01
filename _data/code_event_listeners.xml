@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<code_event_listeners/>
+<code_event_listeners>
+  <listener event_id="user_delete_clean_init" execute_order="10" callback_class="Hampel\ApprovalQueuePlus\Listener" callback_method="userDeleteCleanInit" active="1" description="Add the user_agent table to the list of content to be removed when a user is deleted"/>
+</code_event_listeners>

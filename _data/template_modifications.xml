@@ -18,7 +18,7 @@
 		arg-additionalFilters="{{ ['registration'] }}" />]]></find>
     <replace><![CDATA[<xf:set var="$messageHtml"><xf:trim>
 
-	<xf:macro template="approval_queue_plus_user_macros" name="user_info" arg-user="{$user}" />
+	<xf:macro template="approval_queue_plus_user_macros" name="user_info" arg-user="{$user}" arg-userAgent="{$user->UserAgent->user_agent}" />
 ]]></replace>
   </modification>
   <modification type="public" template="approval_queue.less" modification_key="approvalQueuePlusCss" description="Add custom CSS to approval queue" execution_order="10" enabled="1" action="preg_replace">

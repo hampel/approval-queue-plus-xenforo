@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<permissions/>
+<permissions>
+  <permission permission_group_id="general" permission_id="viewUserAgents" permission_type="flag" interface_group_id="generalModeratorPermissions" display_order="15"/>
+</permissions>
