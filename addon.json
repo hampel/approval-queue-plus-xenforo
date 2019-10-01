@@ -12,6 +12,11 @@
         "Git Repository": "https://bitbucket.org/hampel/approval-queue-plus-xenforo/",
         "Twitter": "https://twitter.com/SimonHampel"
     },
-    "require": [],
+    "require": {
+        "XF": [
+            "2010070",
+            "XenForo 2.1.0+"
+        ]
+    },
     "icon": "fa-check-circle"
 }
