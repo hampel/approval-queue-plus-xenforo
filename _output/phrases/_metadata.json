@@ -1,4 +1,10 @@
 {
+    "approval_queue_plus_user_agent.txt": {
+        "global_cache": false,
+        "version_id": 3010070,
+        "version_string": "3.1.0",
+        "hash": "dfb790522fdea3859af206d32916fe77"
+    },
     "option.approvalQueuePlusDefaultOrder.txt": {
         "global_cache": false,
         "version_id": 3000070,
@@ -22,5 +28,11 @@
         "version_id": 3000070,
         "version_string": "3.0.0",
         "hash": "d503d1565b47ac8b347d5752efa42cc6"
+    },
+    "permission.general_viewUserAgents.txt": {
+        "global_cache": false,
+        "version_id": 3010070,
+        "version_string": "3.1.0",
+        "hash": "e24a23e26995a59a58329d4c717e081b"
     }
 }

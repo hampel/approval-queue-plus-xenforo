@@ -1,4 +1,4 @@
-<xf:macro name="user_info" arg-user="!">
+<xf:macro name="user_info" arg-user="!" arg-userAgent="!">
 	<div class="approvalQueuePlus">
 		<dl class="pairs pairs--columns pairs--fluidSmall">
 			<dt>{{ phrase('user_name') }}</dt>
@@ -28,6 +28,12 @@
 			<dt>{{ phrase('time_zone') }}</dt>
 			<dd>{{ $user->timezone }}</dd>
 		</dl>		
+		<xf:if is="$xf.visitor.canViewUserAgents() AND $userAgent">
+			<dl class="pairs pairs--columns pairs--fluidSmall">
+				<dt>{{ phrase('approval_queue_plus_user_agent') }}</dt>
+				<dd>{{ $userAgent|escape("html")|substr(0, 512) }}</dd>
+			</dl>
+		</xf:if>	
 	
 		<xf:macro template="custom_fields_macros" name="custom_fields_view"
 				  arg-type="users" arg-group="{{ null }}"

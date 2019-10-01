@@ -5,5 +5,5 @@
     "enabled": true,
     "action": "str_replace",
     "find": "<xf:set var=\"$messageHtml\"><xf:trim>\n\n\t<xf:macro template=\"custom_fields_macros\" name=\"custom_fields_view\"\n\t\targ-type=\"users\" arg-group=\"{{ null }}\"\n\t\targ-set=\"{$user.Profile.custom_fields}\"\n\t\targ-additionalFilters=\"{{ ['registration'] }}\" />",
-    "replace": "<xf:set var=\"$messageHtml\"><xf:trim>\n\n\t<xf:macro template=\"approval_queue_plus_user_macros\" name=\"user_info\" arg-user=\"{$user}\" />\n"
+    "replace": "<xf:set var=\"$messageHtml\"><xf:trim>\n\n\t<xf:macro template=\"approval_queue_plus_user_macros\" name=\"user_info\" arg-user=\"{$user}\" arg-userAgent=\"{$user->UserAgent->user_agent}\" />\n"
 }
