@@ -13,5 +13,6 @@ The following information is added to the queue display when approving users:
 * Registration IP
 * Location
 * Time zone
+* User Agent
 
 By [Simon Hampel](https://twitter.com/SimonHampel).
