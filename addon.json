@@ -2,8 +2,8 @@
     "legacy_addon_id": "ModeratedUsers",
     "title": "Approval Queue Plus",
     "description": "Adds extra information to the Approval Queue",
-    "version_id": 3000070,
-    "version_string": "3.0.0",
+    "version_id": 3010070,
+    "version_string": "3.1.0",
     "dev": "Simon Hampel",
     "dev_url": "https://bitbucket.org/hampel/",
     "faq_url": "",
@@ -12,6 +12,11 @@
         "Git Repository": "https://bitbucket.org/hampel/approval-queue-plus-xenforo/",
         "Twitter": "https://twitter.com/SimonHampel"
     },
-    "require": [],
+    "require": {
+        "XF": [
+            "2010070",
+            "XenForo 2.1.0+"
+        ]
+    },
     "icon": "fa-check-circle"
 }
