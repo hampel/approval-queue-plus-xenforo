@@ -18,39 +18,8 @@
 		arg-additionalFilters="{{ ['registration'] }}" />]]></find>
     <replace><![CDATA[<xf:set var="$messageHtml"><xf:trim>
 
-	<div class="approvalQueuePlus">
-		<dl class="pairs pairs--columns pairs--fluidSmall">
-			<dt>{{ phrase('user_name') }}</dt>
-			<dd><a href="{{ link('members/edit', $user) }}">{{ $user->username }}</a><xf:if is="$xf.visitor.canBypassUserPrivacy() AND $user.email"> ({{ $user->email }})</xf:if></dd>
-		</dl>
-		<dl class="pairs pairs--columns pairs--fluidSmall">
-			<dt>{{ phrase('joined') }}</dt>
-			<dd><xf:date time="{{ $user->register_date }}" /></dd>
-		</dl>	
-		<dl class="pairs pairs--columns pairs--fluidSmall">
-			<dt>{{ phrase('last_activity') }}</dt>
-			<dd><xf:date time="{{ $user->last_activity }}" /></dd>
-		</dl>		
-		<xf:if is="$xf.visitor.canViewIps() AND $userIp">
-			<dl class="pairs pairs--columns pairs--fluidSmall">
-				<dt>{{ phrase('registration_ip') }}</dt>
-				<dd><a href="{{ link('misc/ip-info', null, {'ip': $userIp|ip}) }}" target="_blank">{$userIp|ip}</a></dd>
-			</dl>	
-		</xf:if>
-		<dl class="pairs pairs--columns pairs--fluidSmall">
-			<xf:if is="$user->Profile->location">
-				<dt>{{ phrase('location') }}</dt>
-				<dd>{{ $user->Profile->location }}</dd>
-			</xf:if>
-		</dl>
-	
-		<xf:macro template="custom_fields_macros" name="custom_fields_view"
-				  arg-type="users" arg-group="{{ null }}"
-				  arg-set="{$user.Profile.custom_fields}"
-				  arg-additionalFilters="{{ ['registration'] }}"
-				  arg-valueClass="pairs pairs--columns pairs--fluidSmall" />
-		
-	</div>]]></replace>
+	<xf:macro template="approval_queue_plus_user_macros" name="user_info" arg-user="{$user}" />
+]]></replace>
   </modification>
   <modification type="public" template="approval_queue.less" modification_key="approvalQueuePlusCss" description="Add custom CSS to approval queue" execution_order="10" enabled="1" action="preg_replace">
     <find><![CDATA[#^(.*)$#sU]]></find>
