@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+3.2.0 (2019-10-01)
+------------------
+
+* added User Agent to the list of fields shown
+* added permissions for who can view User Agents
+
 3.1.0 (2019-10-01)
 ------------------
 
