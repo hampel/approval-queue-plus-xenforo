@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+3.3.0 (2019-10-02)
+------------------
+
+* automatic cleanup of old UserAgent data for approved users
+* hide core user item header from queue
+* split out user email into separate line
+
 3.2.0 (2019-10-01)
 ------------------
 

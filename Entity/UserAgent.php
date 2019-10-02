@@ -15,6 +15,15 @@ class UserAgent extends Entity
 			'user_agent' => ['type' => self::STR, 'required' => true],
 		];
 
+		$structure->relations = [
+			'User' => [
+				'entity' => 'XF:User',
+				'type' => self::TO_ONE,
+				'conditions' => 'user_id',
+				'primary' => true
+			]
+		];
+
 		return $structure;
 	}
 }
