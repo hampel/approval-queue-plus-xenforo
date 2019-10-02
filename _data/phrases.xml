@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phrases>
   <phrase title="approval_queue_plus_user_agent" version_id="3010070" version_string="3.1.0"><![CDATA[User Agent]]></phrase>
+  <phrase title="cron_entry.approvalQueuePlusCleanup" version_id="3020070" version_string="3.2.0"><![CDATA[Approval Queue Plus: Daily cleanup]]></phrase>
   <phrase title="option.approvalQueuePlusDefaultOrder" version_id="3000070" version_string="3.0.0"><![CDATA[Default Queue Order]]></phrase>
+  <phrase title="option.approvalQueuePlusUserAgentCleanUp" version_id="3020070" version_string="3.2.0"><![CDATA[Delete User Agent data after:]]></phrase>
   <phrase title="option_explain.approvalQueuePlusDefaultOrder" version_id="3000070" version_string="3.0.0"><![CDATA[Change the default Approval Queue sort order - sorted by content date]]></phrase>
+  <phrase title="option_explain.approvalQueuePlusUserAgentCleanUp" version_id="3020070" version_string="3.2.0"><![CDATA[Once registrations are approved, there is little value in retaining User Agent strings. They can be pruned after a specified amount of time if desired.]]></phrase>
   <phrase title="option_group.approvalQueuePlus" version_id="3000070" version_string="3.0.0"><![CDATA[Approval Queue Plus]]></phrase>
   <phrase title="option_group_description.approvalQueuePlus" version_id="3000070" version_string="3.0.0"><![CDATA[Modifications to the Approval Queue]]></phrase>
   <phrase title="permission.general_viewUserAgents" version_id="3010070" version_string="3.1.0"><![CDATA[View User Agents]]></phrase>

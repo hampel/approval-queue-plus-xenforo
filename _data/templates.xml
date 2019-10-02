@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-  <template type="public" title="approval_queue_plus_user_macros" version_id="3010070" version_string="3.1.0"><![CDATA[<xf:macro name="user_info" arg-user="!" arg-userAgent="!">
+  <template type="public" title="approval_queue_plus_user_macros" version_id="3030070" version_string="3.3.0"><![CDATA[<xf:macro name="user_info" arg-user="!" arg-userIp="!">
 	<div class="approvalQueuePlus">
 		<dl class="pairs pairs--columns pairs--fluidSmall">
 			<dt>{{ phrase('user_name') }}</dt>
-			<dd><a href="{{ link('members/edit', $user) }}">{{ $user->username }}</a><xf:if is="$xf.visitor.canBypassUserPrivacy() AND $user.email"> ({{ $user->email }})</xf:if></dd>
+			<dd><a href="{{ link('members/edit', $user) }}">{{ $user->username }}</a></dd>
 		</dl>
+		<xf:if is="$xf.visitor.canBypassUserPrivacy() AND $user.email">
+			<dl class="pairs pairs--columns pairs--fluidSmall">
+				<dt>{{ phrase('email') }}</dt>
+				<dd><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></dd>
+			</dl>	
+		</xf:if>
 		<dl class="pairs pairs--columns pairs--fluidSmall">
 			<dt>{{ phrase('joined') }}</dt>
 			<dd><xf:date time="{{ $user->register_date }}" /></dd>
@@ -30,10 +36,10 @@
 			<dt>{{ phrase('time_zone') }}</dt>
 			<dd>{{ $user->timezone }}</dd>
 		</dl>		
-		<xf:if is="$xf.visitor.canViewUserAgents() AND $userAgent">
+		<xf:if is="$xf.visitor.canViewUserAgents() AND $user->UserAgent->user_agent">
 			<dl class="pairs pairs--columns pairs--fluidSmall">
 				<dt>{{ phrase('approval_queue_plus_user_agent') }}</dt>
-				<dd>{{ $userAgent|escape("html")|substr(0, 512) }}</dd>
+				<dd>{{ $user->UserAgent->user_agent|escape("html")|substr(0, 512) }}</dd>
 			</dl>
 		</xf:if>	
 	
