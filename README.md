@@ -15,4 +15,6 @@ The following information is added to the queue display when approving users:
 * Time zone
 * User Agent
 
+Display of Email addresses, IP addresses and User Agents is controlled by moderator permissions.
+
 By [Simon Hampel](https://twitter.com/SimonHampel).
