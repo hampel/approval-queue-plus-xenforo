@@ -1,4 +1,4 @@
-<xf:macro name="user_info" arg-user="!" arg-userAgent="!">
+<xf:macro name="user_info" arg-user="!" arg-userIp="!">
 	<div class="approvalQueuePlus">
 		<dl class="pairs pairs--columns pairs--fluidSmall">
 			<dt>{{ phrase('user_name') }}</dt>
@@ -28,10 +28,10 @@
 			<dt>{{ phrase('time_zone') }}</dt>
 			<dd>{{ $user->timezone }}</dd>
 		</dl>		
-		<xf:if is="$xf.visitor.canViewUserAgents() AND $userAgent">
+		<xf:if is="$xf.visitor.canViewUserAgents() AND $user->UserAgent->user_agent">
 			<dl class="pairs pairs--columns pairs--fluidSmall">
 				<dt>{{ phrase('approval_queue_plus_user_agent') }}</dt>
-				<dd>{{ $userAgent|escape("html")|substr(0, 512) }}</dd>
+				<dd>{{ $user->UserAgent->user_agent|escape("html")|substr(0, 512) }}</dd>
 			</dl>
 		</xf:if>	
 	

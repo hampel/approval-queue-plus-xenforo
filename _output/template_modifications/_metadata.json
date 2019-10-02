@@ -1,11 +1,14 @@
 {
     "public/approvalQueuePlusApprovalItemUser.json": {
-        "hash": "8cc2989255858c34f6f762a267caff19"
+        "hash": "f1ea80e860f846b06804e21b628b9b52"
     },
     "public/approvalQueuePlusCss.json": {
         "hash": "59264008edd65b2318045916523756bd"
     },
     "public/approvalQueuePlusPageContainerReverse.json": {
         "hash": "198a019a5e8cf829ce96b921e36bae66"
+    },
+    "public/approvalQueuePlusRemoveTopInfo.json": {
+        "hash": "30751e0f807e5316799af5a0eeeb873b"
     }
 }

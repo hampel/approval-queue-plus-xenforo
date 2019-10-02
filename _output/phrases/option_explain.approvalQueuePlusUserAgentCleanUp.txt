@@ -1,0 +1,1 @@
+Once registrations are approved, there is little value in retaining User Agent strings. They can be pruned after a specified amount of time if desired.

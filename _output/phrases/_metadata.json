@@ -5,17 +5,35 @@
         "version_string": "3.1.0",
         "hash": "dfb790522fdea3859af206d32916fe77"
     },
+    "cron_entry.approvalQueuePlusCleanup.txt": {
+        "global_cache": false,
+        "version_id": 3020070,
+        "version_string": "3.2.0",
+        "hash": "45ae8ff8bf9a6f553217f6ffcc07ad30"
+    },
     "option.approvalQueuePlusDefaultOrder.txt": {
         "global_cache": false,
         "version_id": 3000070,
         "version_string": "3.0.0",
         "hash": "c9f42e0120021e24e800d94ffeb9d660"
     },
+    "option.approvalQueuePlusUserAgentCleanUp.txt": {
+        "global_cache": false,
+        "version_id": 3020070,
+        "version_string": "3.2.0",
+        "hash": "980317619eae7f860df3a9a0bbffd3a6"
+    },
     "option_explain.approvalQueuePlusDefaultOrder.txt": {
         "global_cache": false,
         "version_id": 3000070,
         "version_string": "3.0.0",
         "hash": "1f80e5a29931c5f9964d9d91d1d65fb2"
+    },
+    "option_explain.approvalQueuePlusUserAgentCleanUp.txt": {
+        "global_cache": false,
+        "version_id": 3020070,
+        "version_string": "3.2.0",
+        "hash": "b0f624b367d320b5bb1480d7c3e2fa46"
     },
     "option_group.approvalQueuePlus.txt": {
         "global_cache": false,
