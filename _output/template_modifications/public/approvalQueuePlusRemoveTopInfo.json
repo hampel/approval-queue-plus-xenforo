@@ -3,7 +3,7 @@
     "description": "Remove top info from approval queue",
     "execution_order": 9,
     "enabled": true,
-    "action": "str_replace",
-    "find": "<xf:set var=\"$headerPhraseHtml\"><xf:trim>\n\t<xf:if is=\"$xf.visitor.canViewIps() AND $userIp\">\n\t\t<a href=\"{{ link('misc/ip-info', null, {'ip': $userIp|ip}) }}\" target=\"_blank\">{$userIp|ip}</a>\n\t</xf:if>\n\t<xf:if is=\"$xf.visitor.canBypassUserPrivacy() AND $user.email\">\n\t\t{$user.email}\n\t</xf:if>\n</xf:trim></xf:set>",
-    "replace": "<xf:set var=\"$headerPhraseHtml\"></xf:set>"
+    "action": "preg_replace",
+    "find": "#(<xf:set var=\"\\$headerPhraseHtml\">)(.*)(</xf:set>)#simU",
+    "replace": "$1$3"
 }
