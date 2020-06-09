@@ -2,8 +2,8 @@
     "legacy_addon_id": "ModeratedUsers",
     "title": "Approval Queue Plus",
     "description": "Adds extra information to the Approval Queue",
-    "version_id": 3030070,
-    "version_string": "3.3.0",
+    "version_id": 3030170,
+    "version_string": "3.3.1",
     "dev": "Simon Hampel",
     "dev_url": "https://bitbucket.org/hampel/",
     "faq_url": "",
@@ -13,6 +13,10 @@
         "Twitter": "https://twitter.com/SimonHampel"
     },
     "require": {
+        "php": [
+            "5.6.0",
+            "PHP 5.6+"
+        ],
         "XF": [
             "2010070",
             "XenForo 2.1.0+"
