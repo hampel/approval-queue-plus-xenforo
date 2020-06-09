@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+3.3.1 (2020-06-09)
+------------------
+
+* use regex for template modification approvalQueuePlusRemoveTopInfo to avoid clobbering changes made by other addons
+
 3.3.0 (2019-10-02)
 ------------------
 
