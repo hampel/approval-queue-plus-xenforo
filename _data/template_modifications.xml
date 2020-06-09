@@ -21,16 +21,9 @@
 	<xf:macro template="approval_queue_plus_user_macros" name="user_info" arg-user="{$user}" arg-userIp="{$userIp}" />
 ]]></replace>
   </modification>
-  <modification type="public" template="approval_item_user" modification_key="approvalQueuePlusRemoveTopInfo" description="Remove top info from approval queue" execution_order="9" enabled="1" action="str_replace">
-    <find><![CDATA[<xf:set var="$headerPhraseHtml"><xf:trim>
-	<xf:if is="$xf.visitor.canViewIps() AND $userIp">
-		<a href="{{ link('misc/ip-info', null, {'ip': $userIp|ip}) }}" target="_blank">{$userIp|ip}</a>
-	</xf:if>
-	<xf:if is="$xf.visitor.canBypassUserPrivacy() AND $user.email">
-		{$user.email}
-	</xf:if>
-</xf:trim></xf:set>]]></find>
-    <replace><![CDATA[<xf:set var="$headerPhraseHtml"></xf:set>]]></replace>
+  <modification type="public" template="approval_item_user" modification_key="approvalQueuePlusRemoveTopInfo" description="Remove top info from approval queue" execution_order="9" enabled="1" action="preg_replace">
+    <find><![CDATA[#(<xf:set var="\$headerPhraseHtml">)(.*)(</xf:set>)#simU]]></find>
+    <replace><![CDATA[$1$3]]></replace>
   </modification>
   <modification type="public" template="approval_queue.less" modification_key="approvalQueuePlusCss" description="Add custom CSS to approval queue" execution_order="10" enabled="1" action="preg_replace">
     <find><![CDATA[#^(.*)$#sU]]></find>
