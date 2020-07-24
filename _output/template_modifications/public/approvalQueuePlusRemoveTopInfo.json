@@ -1,0 +1,9 @@
+{
+    "template": "approval_item_user",
+    "description": "Remove top info from approval queue",
+    "execution_order": 9,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "#(<xf:set var=\"\\$headerPhraseHtml\">)(.*)(</xf:set>)#simU",
+    "replace": "$1$3"
+}

@@ -1,0 +1,17 @@
+{
+    "cron_class": "Hampel\\ApprovalQueuePlus\\Cron\\CleanUp",
+    "cron_method": "runDailyCleanup",
+    "run_rules": {
+        "day_type": "dom",
+        "dom": [
+            -1
+        ],
+        "hours": [
+            4
+        ],
+        "minutes": [
+            26
+        ]
+    },
+    "active": true
+}

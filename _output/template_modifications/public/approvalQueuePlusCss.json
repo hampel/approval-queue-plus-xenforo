@@ -1,0 +1,9 @@
+{
+    "template": "approval_queue.less",
+    "description": "Add custom CSS to approval queue",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "#^(.*)$#sU",
+    "replace": "$0\n\n.approvalQueuePlus\n{\n\t.pairs\n\t{\n\t\tmargin-bottom: 5px;\n\t}\n}"
+}

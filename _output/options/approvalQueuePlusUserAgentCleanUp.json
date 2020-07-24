@@ -1,0 +1,15 @@
+{
+    "edit_format": "onofftextbox",
+    "edit_format_params": "onoff=enabled\nvalue=delay\ntype=spinbox\nmin=1\ndefault=7\nunits={{ phrase('units_days') }}",
+    "data_type": "array",
+    "sub_options": [
+        "enabled",
+        "delay"
+    ],
+    "validation_class": "",
+    "validation_method": "",
+    "default_value": "{\"enabled\":\"1\",\"delay\":\"7\"}",
+    "relations": {
+        "approvalQueuePlus": 10
+    }
+}
