@@ -5,12 +5,12 @@
     "version_id": 3030170,
     "version_string": "3.3.1",
     "dev": "Simon Hampel",
-    "dev_url": "https://bitbucket.org/hampel/",
+    "dev_url": "https://xenforo.com/community/members/sim.4264/",
     "faq_url": "",
-    "support_url": "https://bitbucket.org/hampel/approval-queue-plus-xenforo/issues",
+    "support_url": "https://xenforo.com/community/threads/approval-queue-plus.170554/",
     "extra_urls": {
-        "Git Repository": "https://bitbucket.org/hampel/approval-queue-plus-xenforo/",
-        "Twitter": "https://twitter.com/SimonHampel"
+        "Addon": "https://xenforo.com/community/resources/approval-queue-plus.7411/",
+        "Git Repository": "https://github.com/hampel/approval-queue-plus-xenforo"
     },
     "require": {
         "php": [
