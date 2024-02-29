@@ -19,4 +19,8 @@ Display of Email addresses, IP addresses and User Agents is controlled by modera
 
 By [Simon Hampel](https://xenforo.com/community/members/sim.4264/).
 
+* [Addon: Approval Queue Plus](https://xenforo.com/community/resources/approval-queue-plus.7411/)
+* [Discussion and support: Approval Queue Plus](https://xenforo.com/community/threads/approval-queue-plus.170554/)
+
+
 Addon has been tested on XF 2.1 and XF 2.2b2
