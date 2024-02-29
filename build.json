@@ -1,5 +1,6 @@
 {
 	"exec": [
+		"rm -v _build/upload/src/addons/{addon_id}/TESTING.md",
 		"mv -v _build/upload/src/addons/{addon_id}/*.md _build/"
 	]
 }
