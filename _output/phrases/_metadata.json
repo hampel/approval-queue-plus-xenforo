@@ -49,8 +49,8 @@
     },
     "permission.general_viewUserAgents.txt": {
         "global_cache": false,
-        "version_id": 3010070,
-        "version_string": "3.1.0",
-        "hash": "e24a23e26995a59a58329d4c717e081b"
+        "version_id": 3030170,
+        "version_string": "3.3.1",
+        "hash": "55629735ce3e70b556cd5dbaba200089"
     }
 }
