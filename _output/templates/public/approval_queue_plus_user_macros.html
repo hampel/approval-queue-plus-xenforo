@@ -34,7 +34,7 @@
 			<dt>{{ phrase('time_zone') }}</dt>
 			<dd>{{ $user->timezone }}</dd>
 		</dl>		
-		<xf:if is="$xf.visitor.canViewUserAgents() AND $user->UserAgent->user_agent">
+		<xf:if is="$xf.visitor.canViewUserAgents() AND $user->UserAgent AND $user->UserAgent->user_agent">
 			<dl class="pairs pairs--columns pairs--fluidSmall">
 				<dt>{{ phrase('approval_queue_plus_user_agent') }}</dt>
 				<dd>{{ $user->UserAgent->user_agent|escape("html")|substr(0, 512) }}</dd>
