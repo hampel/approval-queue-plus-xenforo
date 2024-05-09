@@ -7,7 +7,7 @@ class UserAgent extends Entity
 {
 	public static function getStructure(Structure $structure)
 	{
-		$structure->table = 'xf_user_agent';
+		$structure->table = 'xf_aqp_user_agent';
 		$structure->shortName = 'Hampel\ApprovalQueuePlus:UserAgent';
 		$structure->primaryKey = 'user_id';
 		$structure->columns = [

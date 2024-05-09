@@ -14,20 +14,27 @@ class Setup extends AbstractSetup
 		$this->createTables();
 	}
 
-	// upgrade to 3.2.0
-	public function upgrade3020070Step1(array $stepParams = [])
-	{
-		$this->createTables();
-	}
+    // upgrade to 3.4.0
+    public function upgrade3040070Step1(array $stepParams = [])
+    {
+        if ($this->schemaManager()->tableExists('xf_user_agent'))
+        {
+            $this->schemaManager()->renameTable('xf_user_agent', 'xf_aqp_user_agent');
+        }
+        else
+        {
+            $this->createTables();
+        }
+    }
 
 	public function uninstall(array $stepParams = [])
 	{
-		$this->schemaManager()->dropTable('xf_user_agent');
+		$this->schemaManager()->dropTable('xf_aqp_user_agent');
 	}
 
 	protected function createTables()
 	{
-		$this->schemaManager()->createTable('xf_user_agent', function(Create $table)
+		$this->schemaManager()->createTable('xf_aqp_user_agent', function(Create $table)
 		{
 			$table->addColumn('user_id', 'int');
 			$table->addColumn('user_agent', 'text');

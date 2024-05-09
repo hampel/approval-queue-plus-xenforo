@@ -4,7 +4,7 @@ class Listener
 {
 	public static function userDeleteCleanInit($deleteService, array &$deletes)
 	{
-		$deletes['xf_user_agent'] = 'user_id = ?';
+		$deletes['xf_aqp_user_agent'] = 'user_id = ?';
 	}
 
 }
