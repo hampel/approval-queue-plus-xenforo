@@ -23,4 +23,4 @@ By [Simon Hampel](https://xenforo.com/community/members/sim.4264/).
 * [Discussion and support: Approval Queue Plus](https://xenforo.com/community/threads/approval-queue-plus.170554/)
 
 
-Addon has been tested on XF 2.1 and XF 2.2b2
+Addon has been tested on XF 2.1, 2.2 and 2.3
