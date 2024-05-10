@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+3.4.0 (2024-05-10)
+------------------
+
+* rename permission phrase to make it clear where the permission comes from
+* rename user agent table from xf_user_agent to xf_aqp_user_agent to comply with resource standards
+* bugfix - gracefully handle case where user agent doesn't exist for user
+* fix approval_item_user template modification for compatibility with XF 2.3
+
 3.3.1 (2020-06-09)
 ------------------
 
