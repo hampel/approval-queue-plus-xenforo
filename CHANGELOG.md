@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+3.5.0 (2024-05-11)
+------------------
+
+* rename table to xf_aqp_user_data
+* if Cloudflare headers found, store registration location data in database and display in Approval Queue
+* Admin tool to test Cloudflare headers
+
 3.4.0 (2024-05-10)
 ------------------
 
