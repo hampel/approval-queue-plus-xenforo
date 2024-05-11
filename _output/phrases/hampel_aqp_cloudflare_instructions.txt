@@ -1,0 +1,1 @@
+To show Cloudflare Geolocation data, log into your Cloudflare console, go to <em>Rules > Transform Rules > Managed Transforms</em> and enable <em>Add visitor location headers</em>

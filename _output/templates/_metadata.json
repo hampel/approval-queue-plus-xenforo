@@ -1,7 +1,12 @@
 {
+    "admin/hampel_aqp_tools_test_cloudflare.html": {
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "902f4fe41e3207a5dbf77b81d5f34848"
+    },
     "public/approval_queue_plus_user_macros.html": {
-        "version_id": 3030170,
-        "version_string": "3.3.1",
-        "hash": "3784ee595cadad08c8b2d675822cff6e"
+        "version_id": 3050012,
+        "version_string": "3.5.0 Alpha 2",
+        "hash": "19ca7c815828f1e2bbd2e82a6c98405f"
     }
 }

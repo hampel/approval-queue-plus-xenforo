@@ -2,7 +2,7 @@
 
 use XF\Option\AbstractOption;
 
-class UserAgentCleanUp extends AbstractOption
+class UserDataCleanUp extends AbstractOption
 {
 	public static function get()
 	{

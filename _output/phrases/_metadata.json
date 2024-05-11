@@ -1,4 +1,10 @@
 {
+    "admin_navigation.hampelApprovalQueuePlusTest.txt": {
+        "global_cache": false,
+        "version_id": 3040070,
+        "version_string": "3.4.0",
+        "hash": "35e37f6ed4275659dfe0fc8d91f41a81"
+    },
     "approval_queue_plus_user_agent.txt": {
         "global_cache": false,
         "version_id": 3010070,
@@ -10,6 +16,120 @@
         "version_id": 3020070,
         "version_string": "3.2.0",
         "hash": "45ae8ff8bf9a6f553217f6ffcc07ad30"
+    },
+    "hampel_aqp_cloudflare_city.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "57d056ed0984166336b7879c2af3657f"
+    },
+    "hampel_aqp_cloudflare_continent.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "0bb9e10a3c4b03e6119e6c10b20d6869"
+    },
+    "hampel_aqp_cloudflare_continent_code.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "c02f42b4c7da0f656c64159bfbe97a98"
+    },
+    "hampel_aqp_cloudflare_country.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "59716c97497eb9694541f7c3d37b1a4d"
+    },
+    "hampel_aqp_cloudflare_country_code.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "d5aea6257900e0b66f0d407fbbe271aa"
+    },
+    "hampel_aqp_cloudflare_instructions.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "0c2cb9a19fac40d715117b82ee62a9c1"
+    },
+    "hampel_aqp_cloudflare_latitude.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "3b0eb7469ba9c95f3a05c4cef1f6aac4"
+    },
+    "hampel_aqp_cloudflare_location.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "1dc51cdc11d2c8828e9a9be3ba497588"
+    },
+    "hampel_aqp_cloudflare_longitude.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "9b4dabc50f0b8ccba1c8981831abdad8"
+    },
+    "hampel_aqp_cloudflare_metro_code.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "419ec9c345cbf31dea692c23823336cf"
+    },
+    "hampel_aqp_cloudflare_postal_code.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "572ed696f21038e6cc6c86bb272a3222"
+    },
+    "hampel_aqp_cloudflare_region.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "f447ac856e7e72435904956e3b15f433"
+    },
+    "hampel_aqp_cloudflare_region_code.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "8e3152d6c686e8a9411836c875d4da81"
+    },
+    "hampel_aqp_cloudflare_timezone.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "236df51bb0e6416236e255b528346fca"
+    },
+    "hampel_aqp_location.txt": {
+        "global_cache": false,
+        "version_id": 3050012,
+        "version_string": "3.5.0 Alpha 2",
+        "hash": "220d1babd95a9e423a46aa81e2dfd42e"
+    },
+    "hampel_aqp_profile_location.txt": {
+        "global_cache": false,
+        "version_id": 3050012,
+        "version_string": "3.5.0 Alpha 2",
+        "hash": "67f52b5ef4701d22d222db599b69eca1"
+    },
+    "hampel_aqp_profile_time_zone.txt": {
+        "global_cache": false,
+        "version_id": 3050012,
+        "version_string": "3.5.0 Alpha 2",
+        "hash": "87baf5d53051d1ee73ff9713ea3c5684"
+    },
+    "hampel_aqp_test_cloudflare_location.txt": {
+        "global_cache": false,
+        "version_id": 3050011,
+        "version_string": "3.5.0 Alpha 1",
+        "hash": "f910b3fd1f0574ee327a93c764802d2e"
+    },
+    "hampel_aqp_timezone.txt": {
+        "global_cache": false,
+        "version_id": 3050012,
+        "version_string": "3.5.0 Alpha 2",
+        "hash": "1d846c6eaaf4f9869ef9bff50675270b"
     },
     "option.approvalQueuePlusDefaultOrder.txt": {
         "global_cache": false,

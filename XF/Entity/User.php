@@ -8,8 +8,8 @@ class User extends XFCP_User
 	{
 		$structure = parent::getStructure($structure);
 
-		$structure->relations['UserAgent'] = [
-			'entity' => 'Hampel\ApprovalQueuePlus:UserAgent',
+		$structure->relations['AqpData'] = [
+			'entity' => 'Hampel\ApprovalQueuePlus:UserData',
 			'type' => self::TO_ONE,
 			'conditions' => 'user_id',
 			'primary' => true

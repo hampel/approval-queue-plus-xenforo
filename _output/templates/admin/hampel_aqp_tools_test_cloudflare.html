@@ -1,0 +1,83 @@
+<xf:title>{{ phrase('hampel_aqp_test_cloudflare_location') }}</xf:title>
+
+<div class="blockMessage">
+	{{ phrase('hampel_aqp_cloudflare_instructions') }}
+</div>
+
+<div class="block-container">
+	<h2 class="block-header">{{ phrase('hampel_aqp_cloudflare_location') }}</h2>
+	<div class="block-body">
+
+		<xf:if is="$location.city">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_city') }}">
+				{{ $location.city }}
+			</xf:formrow>
+		</xf:if>
+		
+		<xf:if is="$location.country_code">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_country_code') }}">
+				{{ $location.country_code }}
+			</xf:formrow>
+		</xf:if>		
+		
+		<xf:if is="$location.country">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_country') }}">
+				{{ $location.country }}
+			</xf:formrow>
+		</xf:if>
+	
+		<xf:if is="$location.continent_code">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_continent_code') }}">
+				{{ $location.continent_code }}
+			</xf:formrow>
+		</xf:if>
+		
+		<xf:if is="$location.continent">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_continent') }}">
+				{{ $location.continent }}
+			</xf:formrow>
+		</xf:if>
+		
+		<xf:if is="$location.longitude">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_longitude') }}">
+				{{ $location.longitude }}
+			</xf:formrow>
+		</xf:if>
+		
+		<xf:if is="$location.latitude">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_latitude') }}">
+				{{ $location.latitude }}
+			</xf:formrow>
+		</xf:if>
+		
+		<xf:if is="$location.region">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_region') }}">
+				{{ $location.region }}
+			</xf:formrow>
+		</xf:if>
+		
+		<xf:if is="$location.region_code">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_region_code') }}">
+				{{ $location.region_code }}
+			</xf:formrow>
+		</xf:if>
+		
+		<xf:if is="$location.metro_code">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_metro_code') }}">
+				{{ $location.metro_code }}
+			</xf:formrow>
+		</xf:if>
+		
+		<xf:if is="$location.postal_code">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_postal_code') }}">
+				{{ $location.postal_code }}
+			</xf:formrow>
+		</xf:if>
+		
+		<xf:if is="$location.timezone">
+			<xf:formrow label="{{ phrase('hampel_aqp_cloudflare_timezone') }}">
+				{{ $location.timezone }}
+			</xf:formrow>
+		</xf:if>		
+	</div>		
+</div>

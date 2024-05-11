@@ -2,21 +2,21 @@
 	<div class="approvalQueuePlus">
 		<dl class="pairs pairs--columns pairs--fluidSmall">
 			<dt>{{ phrase('user_name') }}</dt>
-			<dd><a href="{{ link('members/edit', $user) }}">{{ $user->username }}</a></dd>
+			<dd><a href="{{ link('members/edit', $user) }}">{{ $user.username }}</a></dd>
 		</dl>
 		<xf:if is="$xf.visitor.canBypassUserPrivacy() AND $user.email">
 			<dl class="pairs pairs--columns pairs--fluidSmall">
 				<dt>{{ phrase('email') }}</dt>
-				<dd><a href="mailto:{{ $user->email }}">{{ $user->email }}</a></dd>
+				<dd><a href="mailto:{{ $user.email }}">{$user.email|email_display}</a></dd>
 			</dl>	
 		</xf:if>
 		<dl class="pairs pairs--columns pairs--fluidSmall">
 			<dt>{{ phrase('joined') }}</dt>
-			<dd><xf:date time="{{ $user->register_date }}" /></dd>
+			<dd><xf:date time="{{ $user.register_date }}" /></dd>
 		</dl>	
 		<dl class="pairs pairs--columns pairs--fluidSmall">
 			<dt>{{ phrase('last_activity') }}</dt>
-			<dd><xf:date time="{{ $user->last_activity }}" /></dd>
+			<dd><xf:date time="{{ $user.last_activity }}" /></dd>
 		</dl>		
 		<xf:if is="$xf.visitor.canViewIps() AND $userIp">
 			<dl class="pairs pairs--columns pairs--fluidSmall">
@@ -24,20 +24,44 @@
 				<dd><a href="{{ link('misc/ip-info', null, {'ip': $userIp|ip}) }}" target="_blank">{$userIp|ip}</a></dd>
 			</dl>	
 		</xf:if>
-		<xf:if is="$user->Profile->location">
+		<xf:if is="$user.AqpData AND $user.AqpData.cf_location">
+			<xf:if is="$user.AqpData.cf_location.country">
+				<dl class="pairs pairs--columns pairs--fluidSmall">
+					<dt>{{ phrase('hampel_aqp_location') }}</dt>
+					<dd>
+						<xf:if is="$user.AqpData.cf_location.city">
+							{{ $user.AqpData.cf_location.city }}, 
+						</xf:if>
+						<xf:if is="$user.AqpData.cf_location.region_code">
+							{{ $user.AqpData.cf_location.region_code }}, 
+						</xf:if>
+						{{ $user.AqpData.cf_location.country }}
+					</dd>
+				</dl>
+			</xf:if>			
+		</xf:if>
+		<xf:if is="$user.Profile.location">
 			<dl class="pairs pairs--columns pairs--fluidSmall">
-				<dt>{{ phrase('location') }}</dt>
-				<dd>{{ $user->Profile->location }}</dd>
+				<dt>{{ phrase('hampel_aqp_profile_location') }}</dt>
+				<dd>{{ $user.Profile.location }}</dd>
 			</dl>
 		</xf:if>
+		<xf:if is="$user.AqpData AND $user.AqpData.cf_location">
+			<xf:if is="$user.AqpData.cf_location.timezone">
+				<dl class="pairs pairs--columns pairs--fluidSmall">
+					<dt>{{ phrase('hampel_aqp_timezone') }}</dt>
+					<dd>{{ $user.AqpData.cf_location.timezone }}</dd>
+				</dl>
+			</xf:if>
+		</xf:if>
 		<dl class="pairs pairs--columns pairs--fluidSmall">
-			<dt>{{ phrase('time_zone') }}</dt>
-			<dd>{{ $user->timezone }}</dd>
+			<dt>{{ phrase('hampel_aqp_profile_time_zone') }}</dt>
+			<dd>{{ $user.timezone }}</dd>
 		</dl>		
-		<xf:if is="$xf.visitor.canViewUserAgents() AND $user->UserAgent AND $user->UserAgent->user_agent">
+		<xf:if is="$xf.visitor.canViewUserAgents() AND $user.AqpData AND $user.AqpData.user_agent">
 			<dl class="pairs pairs--columns pairs--fluidSmall">
 				<dt>{{ phrase('approval_queue_plus_user_agent') }}</dt>
-				<dd>{{ $user->UserAgent->user_agent|escape("html")|substr(0, 512) }}</dd>
+				<dd>{{ $user.AqpData.user_agent|escape("html")|substr(0, 512) }}</dd>
 			</dl>
 		</xf:if>	
 	
