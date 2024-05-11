@@ -1,5 +1,7 @@
 
-* Setup creates table `xf_user_agent`
+TODO: needs updating for v3.5.0
+
+* Setup creates table `xf_aqp_user_data`
 
 * Class extensions
 	* `XF\Entity\User`
