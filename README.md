@@ -11,9 +11,15 @@ The following information is added to the queue display when approving users:
 * Date joined
 * Date of last activity
 * Registration IP
-* Location
-* Time zone
+* Cloudflare location (see note below)
+* Profile location (user entered)
+* Cloudflare time zone (see note below)
+* Profile time zone (user selected)
 * User Agent
+
+**Note:** Cloudflare location and time zone are only shown if the site is using Cloudflare. To enable display of this 
+data, you must turn on _Managed Transforms_ in your Cloudflare admin console. Go to 
+`Rules > Transform Rules > Managed Transforms` and enable _Add visitor location headers_.
 
 Display of Email addresses, IP addresses and User Agents is controlled by moderator permissions.
 
