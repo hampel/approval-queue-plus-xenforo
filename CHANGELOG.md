@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+3.5.1 (2024-05-12)
+------------------
+
+* fix bug with upgrade process which saw some columns not being created in some circumstances
+
 3.5.0 (2024-05-11)
 ------------------
 
