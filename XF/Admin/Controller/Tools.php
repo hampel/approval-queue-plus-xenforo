@@ -7,6 +7,7 @@ class Tools extends XFCP_Tools
 	public function actionHampelAqpShowCfLocation()
 	{
 		$this->setSectionContext('hampelAQPShowCFLocation');
+        $this->assertAdminPermission('option');
 
         /** @var Cloudflare $cf */
         $cf = $this->app()->container('aqp.cloudflare');
