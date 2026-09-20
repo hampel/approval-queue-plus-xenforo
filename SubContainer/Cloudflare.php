@@ -14,7 +14,7 @@ class Cloudflare extends AbstractSubContainer
             return [
                 'HTTP_CF_IPCITY' => 'city',
                 'HTTP_CF_IPCOUNTRY' => 'country_code',
-                'HTTP_CF_IPCONTINTENT' => 'continent_code',
+                'HTTP_CF_IPCONTINENT' => 'continent_code',
                 'HTTP_CF_IPLONGITUDE' => 'longitude',
                 'HTTP_CF_IPLATITUDE' => 'latitude',
                 'HTTP_CF_REGION' => 'region',
@@ -50,7 +50,7 @@ class Cloudflare extends AbstractSubContainer
                 {
                     $location['country'] = $data->getCountry($value, $value);
                 }
-                elseif ($header == 'HTTP_CF_IPCONTINTENT')
+                elseif ($header == 'HTTP_CF_IPCONTINENT')
                 {
                     $location['continent'] = $data->getContinent($value, $value);
                 }
