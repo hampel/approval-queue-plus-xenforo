@@ -1,3 +1,7 @@
+# Normalise line endings: the working tree may pick up CRLF when committed through a
+# Windows client over \\wsl$, but what is stored stays LF.
+* text=auto eol=lf
+
 # Keep development files out of `git archive` (GitHub's "Download ZIP").
 # The XenForo release zip is a separate mechanism — see build.json's rm line.
 /CLAUDE.md        export-ignore
