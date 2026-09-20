@@ -8,6 +8,7 @@
     ],
     "validation_class": "",
     "validation_method": "",
+    "advanced": false,
     "default_value": "{\"enabled\":\"1\",\"delay\":\"7\"}",
     "relations": {
         "approvalQueuePlus": 10
