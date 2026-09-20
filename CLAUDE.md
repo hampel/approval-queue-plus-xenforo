@@ -129,9 +129,16 @@ XF 2.0 add-on of that name.
 
 `addon.json` carries `version_id` and `version_string` and they must be bumped together — the
 `abbccde` encoding is documented beside `XF::$versionId` in `src/XF.php`, where `d` is stability
-(alpha 1, beta 3, RC 5, stable 7) and `e` the level within it. `3050370` / `"3.5.3"` is stable
-level 0. `version_id` drives upgrade ordering; `version_string` only names the zip and shows in the
-ACP, so a mismatch survives unnoticed.
+(alpha 1, beta 3, RC 5, stable 7) and `e` the level within it — so `3050370` / `"3.5.3"` is stable
+level 0 and `3050411` / `"3.5.4a1"` is alpha 1 of the next patch. `version_id` drives upgrade
+ordering; `version_string` only names the zip and shows in the ACP, so a mismatch survives
+unnoticed.
+
+**Open a development cycle by bumping to the next patch alpha before the first change**, with
+`xf-addon:bump-version`, which writes `addon.json` and the installed record together. Until that
+happens the branch carries the last release's version string, so any build on it overwrites that
+release's zip — the filename comes from the version string alone — and `xf:addon-list` reports the
+install as running a released version while it runs branch code.
 
 **`addon.json` has no trailing newline, and that is the format.** `json_hash` comes from
 `hashTextFile`, which strips `\r` but not `\n`, so adding one leaves the hash stale and the ACP
