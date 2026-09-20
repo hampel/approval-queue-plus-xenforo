@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 3.6.0 (2026-09-20)
+
+- now requires XenForo 2.2.0 or later
+- fixed: Cloudflare continent information was never recorded, because the `CF-IPContinent` header
+  was misspelled internally — continent never appeared in the Approval Queue
+- fixed: the user agent clean up option's on/off setting is now honoured — switching it off did
+  not previously stop the scheduled clean up from running
+- the `viewUserAgents` permission is now `hampelAqpViewUserAgents`, so that it cannot clash with
+  a permission of the same name from another add-on — existing permission settings are
+  migrated automatically during the upgrade
+
 ## 3.5.3 (2025-12-11)
 
 - run enqueuePostUpgradeCleanUp during upgrades if we're running XF2.3+
