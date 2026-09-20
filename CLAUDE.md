@@ -68,19 +68,23 @@ arrived on that request and exists to answer exactly that question.
 `Data\CountryCodes` turns `country_code` and `continent_code` into names, falling back to the raw
 code, and is reached as an add-on data object rather than instantiated.
 
-## The clean-up option is half-wired
+## The clean-up cron is not daily, whatever it is called
 
-`Cron\CleanUp::runDailyCleanup()` calls `Repository\UserData::pruneUserData()`, which deletes rows
-whose user is now `valid` and registered on or before `\XF::$time - delay * 86400`. Two things
-about it are not what the names suggest:
+`Cron\CleanUp::runDailyCleanup()` returns early unless `Option\UserDataCleanUp::isEnabled()`, then
+calls `Repository\UserData::pruneUserData()`, which deletes rows whose user is now `valid` and
+registered on or before `\XF::$time - delay * 86400`. Two things about it are not what the names
+suggest:
 
-- **Nothing consults `Option\UserDataCleanUp::isEnabled()`.** The option's `enabled` sub-option is
-  rendered in the ACP and read by that method, and no caller exists — the prune runs whenever the
-  cron fires. `getDelay()` returns `0` for a non-numeric value, which makes the cut-off *now* and
-  prunes every approved user's row.
-- **The cron is not daily.** `_output/cron_entries/approvalQueuePlusCleanup.json` has
-  `day_type: dom`, `dom: [-1]` — the last day of each month, at 04:26 — while the entry and the
-  method are both named for a daily run.
+- **It runs monthly.** `_output/cron_entries/approvalQueuePlusCleanup.json` has `day_type: dom`,
+  `dom: [-1]` — the last day of each month, at 04:26 — while the entry and the method are both
+  named for a daily run. Renaming the method would be an artifact change as well as a code one;
+  the schedule is the thing to read, not the name.
+- **`getDelay()` returns `0` for a non-numeric value**, which puts the cut-off at *now* and prunes
+  every approved user's row. Reachable if the delay box is cleared while the option stays on.
+
+The guard belongs in the cron method rather than in the repository: `pruneUserData($cutOff)` takes
+an explicit cut-off so it can still be called deliberately, and the option is about the scheduled
+path.
 
 ## Display is four template modifications, and two of them are fragile
 
