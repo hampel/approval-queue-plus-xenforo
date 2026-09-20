@@ -21,7 +21,7 @@ Everything below is declared in `_output/`. Regenerate the inventory from there 
 | `PAGE_CONTAINER` | rewrites the approval-queue link to carry a sort order |
 | cron entry | prunes rows for users who have since been approved |
 | options × 2 | default queue order; clean-up on/off plus a delay in days |
-| permission `general/viewUserAgents` | gates the user agent row |
+| permission `general/hampelAqpViewUserAgents` | gates the user agent row |
 | admin navigation | the *Checks and Tests* entry for the Cloudflare page |
 | table `xf_aqp_user_data` | `user_agent`, `iso_code`, `cf_location`; dropped on uninstall |
 

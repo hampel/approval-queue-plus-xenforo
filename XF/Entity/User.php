@@ -20,6 +20,6 @@ class User extends XFCP_User
 
 	public function canViewUserAgents()
 	{
-		return $this->exists() && $this->hasPermission('general', 'viewUserAgents');
+		return $this->exists() && $this->hasPermission('general', 'hampelAqpViewUserAgents');
 	}
 }

@@ -127,8 +127,11 @@ the most brittle thing here; check it first after any XF upgrade.
 
 Three visibility gates apply inside the macro, and they are separate permissions: email needs
 `canBypassUserPrivacy()`, the registration IP needs `canViewIps()`, and the user agent needs
-`canViewUserAgents()` — the one permission this add-on defines, `general/viewUserAgents`, added by
-the `XF\Entity\User` extension.
+`canViewUserAgents()` — the one permission this add-on defines,
+`general/hampelAqpViewUserAgents`, added by the `XF\Entity\User` extension. It was
+`general/viewUserAgents` until 3.6.0; `Setup::upgrade3060011Step1()` renames it in place so that
+existing grants move with it, which is a thing XenForo does for you and only if you rename rather
+than replace.
 
 ## Setup carries three table names, and the branches are the upgrade history
 

@@ -167,10 +167,10 @@
         "version_string": "3.0.0",
         "hash": "d503d1565b47ac8b347d5752efa42cc6"
     },
-    "permission.general_viewUserAgents.txt": {
+    "permission.general_hampelAqpViewUserAgents.txt": {
         "global_cache": false,
-        "version_id": 3030170,
-        "version_string": "3.3.1",
+        "version_id": 3060011,
+        "version_string": "3.6.0a1",
         "hash": "55629735ce3e70b556cd5dbaba200089"
     }
 }
