@@ -20,19 +20,34 @@ Run them from this directory — it is the git repo. `cmd.php` resolves the inst
 location rather than from the working directory, so the relative path works unchanged.
 
 ```bash
+composer install                                  # first time; vendor/ is gitignored
+vendor/bin/phpunit                                # whole suite
+vendor/bin/phpunit --testsuite Unit               # one suite
+vendor/bin/phpunit --filter CloudflareLocationTest # one class
+
 php ../../../../cmd.php xf-dev:import --addon=Hampel/ApprovalQueuePlus   # _output/ -> database
 php ../../../../cmd.php xf-addon:export Hampel/ApprovalQueuePlus         # database -> _output/
 php ../../../../cmd.php xf-addon:build-release Hampel/ApprovalQueuePlus  # release only
 ```
 
-**There is no test suite and no Composer dependency** — no `composer.json`, no `phpunit.xml`, no
-`vendor/`, and `addon.json` declares no `composer_autoload`. `TESTING.md` is a manual test plan and
-is the only verification this add-on has; its own first line says it is still owed an update for
-3.5.0.
+**The Composer dependencies are dev-only and `addon.json` declares no `composer_autoload`.** That
+is deliberate rather than an omission: an add-on that declares it registers its whole `vendor/`
+onto XenForo's class loader for every add-on on the install, which is how one add-on's vendored
+PHPUnit kills another add-on's test run. Nothing here is needed at runtime, so nothing is
+declared.
 
-`build.json` removes `TESTING.md` and both Claude files from the build output, then moves every
-remaining root `*.md` up to the zip root. **The `rm` line has to stay before the `mv`** — after it
-the files it names have already been renamed, and `rm -f` reports nothing while they ship anyway.
+`tests/TestCase.php` sets `$addonsToLoad = ['Hampel/ApprovalQueuePlus']`, so the suite boots a
+real XF app with only this add-on active.
+
+**`build.json` strips `vendor/`, `tests/`, `phpunit.xml`, the Composer manifests, `TESTING.md` and
+both Claude files from the build output**, then moves every remaining root `*.md` up to the zip
+root. Two things about that are load-bearing:
+
+- **The `rm` lines have to stay before the `mv`.** After it, the files they name have already been
+  renamed to the zip root, and `rm -f` reports nothing while they ship anyway.
+- **`vendor/` would otherwise ship.** XenForo's builder excludes `_*` directories and dotfiles;
+  `vendor` is neither, so the whole dev tree — PHPUnit included — lands in the release unless the
+  `rm` names it.
 
 ## One row per registration, written from a single service extension
 
