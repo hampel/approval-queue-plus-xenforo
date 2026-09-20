@@ -1,3 +1,6 @@
 _data/
 _releases/
+vendor/
+.phpunit.cache/
+.phpunit.result.cache
 CLAUDE.local.md

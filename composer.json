@@ -1,0 +1,12 @@
+{
+    "license": "MIT",
+    "require-dev": {
+        "hampel/xenforo-test-framework": "^4.3",
+        "phpunit/phpunit": "^12.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}

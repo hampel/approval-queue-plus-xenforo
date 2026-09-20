@@ -1,6 +1,7 @@
 {
 	"exec": [
-		"rm -fv _build/upload/src/addons/{addon_id}/TESTING.md _build/upload/src/addons/{addon_id}/CLAUDE.md _build/upload/src/addons/{addon_id}/CLAUDE.local.md",
+		"rm -fv _build/upload/src/addons/{addon_id}/TESTING.md _build/upload/src/addons/{addon_id}/CLAUDE.md _build/upload/src/addons/{addon_id}/CLAUDE.local.md _build/upload/src/addons/{addon_id}/phpunit.xml _build/upload/src/addons/{addon_id}/composer.json _build/upload/src/addons/{addon_id}/composer.lock",
+		"rm -frv _build/upload/src/addons/{addon_id}/tests _build/upload/src/addons/{addon_id}/vendor _build/upload/src/addons/{addon_id}/.phpunit.cache _build/upload/src/addons/{addon_id}/.phpunit.result.cache",
 		"mv -v _build/upload/src/addons/{addon_id}/*.md _build/"
 	]
 }
