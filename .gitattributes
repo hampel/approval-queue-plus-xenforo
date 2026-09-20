@@ -1,0 +1,7 @@
+# Keep development files out of `git archive` (GitHub's "Download ZIP").
+# The XenForo release zip is a separate mechanism — see build.json's rm line.
+/CLAUDE.md        export-ignore
+/CLAUDE.local.md  export-ignore
+/TESTING.md       export-ignore
+/.gitattributes   export-ignore
+/.gitignore       export-ignore
