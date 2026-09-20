@@ -13,13 +13,9 @@
         "Git Repository": "https://github.com/hampel/approval-queue-plus-xenforo"
     },
     "require": {
-        "php": [
-            "5.6.0",
-            "PHP 5.6+"
-        ],
         "XF": [
-            "2010070",
-            "XenForo 2.1.0+"
+            "2020070",
+            "XenForo 2.2.0+"
         ]
     },
     "icon": "fa-check-circle"

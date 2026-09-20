@@ -144,9 +144,16 @@ install as running a released version while it runs branch code.
 `hashTextFile`, which strips `\r` but not `\n`, so adding one leaves the hash stale and the ACP
 reports the add-on as modified until `xf-addon:sync-json` runs.
 
-The declared floors are PHP 5.6.0 and XF 2.1.0 (`2010070`). The code does not use anything above
-either, but the display macro depends on XF 2.3's `approval_item_user` as well as 2.1's, so the
-floor is wider than what is actually tested.
+**The only declared floor is XF 2.2.0 (`2020070`), and there is deliberately no `require.php`.**
+XenForo states its own PHP minimum per release — 7.0 for 2.2, 7.2 for 2.3 — so an add-on floor
+below that declares a combination that cannot exist. Declare one only if the add-on genuinely
+needs more PHP than its XF floor already guarantees.
+
+The XF floor is set by what can be tested, not by what the code uses: nothing here needs 2.2, but
+2.1 cannot be verified against any available install. The class-extension `from_class` names are
+the pre-2.3 spellings, which is what a 2.2 floor requires — XF 2.3 aliases them forward, while 2.2
+has no alias mechanism at all, so adopting the 2.3 names would be a floor change whether or not
+`addon.json` said so.
 
 Phrases are prefixed `hampel_aqp_`, with one survivor from before the convention:
 `approval_queue_plus_user_agent`. Leave it — renaming a phrase loses any customisation an
