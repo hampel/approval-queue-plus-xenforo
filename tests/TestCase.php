@@ -6,8 +6,6 @@ use Hampel\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-	use CreatesApplication;
-
 	/**
 	 * @var string $rootDir path to the XenForo root, relative to the add-on directory
 	 *
@@ -18,8 +16,11 @@ abstract class TestCase extends BaseTestCase
 	/**
 	 * @var array $addonsToLoad load this add-on alone
 	 *
-	 * Isolation is not cosmetic here: it keeps another add-on's vendored PHPUnit off the class
-	 * loader, which is what makes a suite die before its first test with an unrelated error.
+	 * Isolation keeps every other add-on's listeners, class extensions and vendored PHPUnit out
+	 * of the test application. It needs framework 5.0 or later to be complete: below that,
+	 * `app_setup` listeners were not filtered at all, and this add-on's extensions on pre-2.3
+	 * class names (`XF\Service\User\Registration`, `XF\Admin\Controller\Tools`) were silently
+	 * not applied - so a test of the registration write path ran XenForo's class, not ours.
 	 */
 	protected $addonsToLoad = ['Hampel/ApprovalQueuePlus'];
 }
