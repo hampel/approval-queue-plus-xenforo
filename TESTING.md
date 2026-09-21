@@ -56,6 +56,10 @@ vendor/bin/phpunit --testsuite Unit
 vendor/bin/phpunit --filter CloudflareLocationTest
 ```
 
+**The Feature suite registers real users**, inside a transaction that is rolled back — it
+writes to whichever forum `$rootDir` points at, and leaves nothing behind. It is the only test of
+the registration extension, which is the only writer of the add-on's data.
+
 **Read the per-suite counts, not just the exit code.** A test file whose name does not end
 `Test.php` is never collected, and the run still reports `OK`.
 

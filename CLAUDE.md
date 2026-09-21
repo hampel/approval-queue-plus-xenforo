@@ -37,7 +37,16 @@ PHPUnit kills another add-on's test run. Nothing here is needed at runtime, so n
 declared.
 
 `tests/TestCase.php` sets `$addonsToLoad = ['Hampel/ApprovalQueuePlus']`, so the suite boots a
-real XF app with only this add-on active.
+real XF app with only this add-on active. **That needs framework 5.0 or later**: below it, this
+add-on's extensions on pre-2.3 class names were silently not applied in an isolated suite.
+
+**`tests/Feature/RegistrationWritesUserDataTest` registers real users** through the real service,
+because the registration extension is the only writer of `xf_aqp_user_data`. It runs inside
+`UsesDatabaseTransactions` and leaves nothing behind, but it does write to the forum the suite
+points at. It also drops strict SQL mode for its own connection: another add-on on a development
+forum may add a `NOT NULL` column with no default to a core table, which an isolated app leaves
+out of its `INSERT`, and strict mode then rejects the registration before this add-on's code
+runs. The test asserts every value this add-on stores, so the relaxation cannot hide a defect here.
 
 **`build.json` strips `vendor/`, `tests/`, `phpunit.xml`, the Composer manifests, `TESTING.md` and
 both Claude files from the build output**, then moves every remaining root `*.md` up to the zip
