@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 3.6.1 (2026-09-22)
+
+- the Cloudflare location in the Approval Queue now ends with the continent — for example
+  *Sydney, NSW, Australia (Oceania)* — for users who registered on 3.6.0 or later, which is when
+  continent began to be recorded
+
 ## 3.6.0 (2026-09-20)
 
 - now requires XenForo 2.2.0 or later
