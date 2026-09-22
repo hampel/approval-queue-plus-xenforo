@@ -71,7 +71,9 @@ use real rows — and both run inside a transaction that is rolled back, so noth
 
 **`TemplateModificationsTest` reads the apply count XenForo recorded when it last compiled each
 template**, so it answers for the forum the suite points at: run it after upgrading that forum,
-not only after changing the add-on.
+not only after changing the add-on. **After editing a modification, run `xf-dev:import` first** —
+unlike a template, a modification's `_output/` file is not re-imported at render time, so the
+test would report on the version before the edit.
 
 **Read the per-suite counts, not just the exit code.** A test file whose name does not end
 `Test.php` is never collected, and the run still reports `OK`.

@@ -46,9 +46,14 @@ test settles.
 **On a development install the macro tests render the `_output/` copy of a template, not the
 database's.** XenForo's development template watcher compares the compiled template's
 `FROM HASH` with the `_output/` file on every render and re-imports the file when they differ. So
-an edit to `_output/` is tested with no import, and an edit made only in the database — a
-mutation, say — is silently reverted at render time and the test sees the original. Mutate the
-`_output/` file, and restore it and `_metadata.json` afterwards.
+an edit to a template's `_output/` file is tested with no import, and an edit made only in the
+database — a mutation, say — is silently reverted at render time and the test sees the original.
+Mutate the `_output/` file, and restore it and `_metadata.json` afterwards.
+
+**That is templates only.** Only the template handler is attached as a watcher, so an edit under
+`_output/template_modifications/` is not seen until `xf-dev:import` — and this add-on's four
+modifications are its most fragile part. Import before running `TemplateModificationsTest` after
+changing one, or it reports on the previous version.
 
 **`tests/Feature/RegistrationWritesUserDataTest` registers real users** through the real service,
 because the registration extension is the only writer of `xf_aqp_user_data`. It runs inside
