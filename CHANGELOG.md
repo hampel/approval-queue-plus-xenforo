@@ -4,7 +4,8 @@
 
 - now requires XenForo 2.2.0 or later
 - fixed: Cloudflare continent information was never recorded, because the `CF-IPContinent` header
-  was misspelled internally — continent never appeared in the Approval Queue
+  was misspelled internally — it is now recorded, and shown on the Cloudflare location test page
+  under *Tools > Checks and Tests*
 - fixed: the user agent clean up option's on/off setting is now honoured — switching it off did
   not previously stop the scheduled clean up from running
 - the `viewUserAgents` permission is now `hampelAqpViewUserAgents`, so that it cannot clash with
