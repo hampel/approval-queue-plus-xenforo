@@ -17,7 +17,7 @@ The following is shown for each user awaiting approval:
 - Date joined
 - Date of last activity
 - Registration IP
-- Cloudflare location (see the note below)
+- Cloudflare location — city, region, country and continent (see the note below)
 - Profile location (user entered)
 - Cloudflare time zone (see the note below)
 - Profile time zone (user selected)

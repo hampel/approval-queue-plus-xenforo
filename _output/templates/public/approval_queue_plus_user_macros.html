@@ -36,6 +36,9 @@
 							{{ $user.AqpData.cf_location.region_code }}, 
 						</xf:if>
 						{{ $user.AqpData.cf_location.country }}
+						<xf:if is="$user.AqpData.cf_location.continent AND $user.AqpData.cf_location.continent != $user.AqpData.cf_location.country">
+							({{ $user.AqpData.cf_location.continent }})
+						</xf:if>
 					</dd>
 				</dl>
 			</xf:if>			

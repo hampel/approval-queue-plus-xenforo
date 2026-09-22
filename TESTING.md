@@ -61,7 +61,7 @@ vendor/bin/phpunit --filter CloudflareLocationTest
 | test | settles |
 |---|---|
 | `RegistrationWritesUserDataTest` | a real registration writes the row, with and without Cloudflare headers |
-| `UserInfoMacroTest` | the queue macro as moderators see it — each of the email, IP and user agent rows hidden without its own permission, and a user with no recorded data |
+| `UserInfoMacroTest` | the queue macro as moderators see it — each of the email, IP and user agent rows hidden without its own permission, the location row with and without a continent, and a user with no recorded data |
 | `CloudflareTestPageTest` | the admin test page, with headers on the request, and its `option` permission check |
 | `TemplateModificationsTest` | all four modifications still apply |
 | `PruneUserDataTest` | whose data the prune deletes — approved users past the delay, never a user still in the queue |
@@ -94,7 +94,7 @@ None of these can be settled from a shell.
    that Cloudflare sends it. Only a registration through a real Cloudflare zone with
    *Rules → Transform Rules → Managed Transforms → Add visitor location headers* enabled settles
    that, and the add-on's own admin page under *Tools > Checks and Tests* is the place to look —
-   it dumps whatever arrived on that request, and is the only place continent is shown.
+   it dumps whatever arrived on that request.
 3. **The sort-order option.** Set *Default Queue Order* to descending, reload the forum index, and
    confirm the approval-queue link has gained the order and direction parameters. The suite shows
    the modification applies, not what the link then says.

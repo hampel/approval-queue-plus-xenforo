@@ -105,6 +105,48 @@ class UserInfoMacroTest extends TestCase
 			. ' Australia /', $text, 'a country alone should render without stray separators');
 	}
 
+	public function test_the_location_row_ends_with_the_continent()
+	{
+		$user = $this->pendingUser([
+			'city' => 'Sydney',
+			'region_code' => 'NSW',
+			'country' => 'Australia',
+			'continent' => 'Oceania',
+		]);
+
+		$text = $this->textOfRender($this->allPermissions(), $user);
+
+		$this->assertStringContainsString('Sydney, NSW, Australia (Oceania)', $text);
+	}
+
+	/**
+	 * Rows recorded before 3.6.0 carry no continent - the header name was misspelled - and
+	 * nothing backfills them. They must render as they always did.
+	 */
+	public function test_a_row_with_no_continent_shows_none()
+	{
+		$user = $this->pendingUser(['city' => 'Sydney', 'region_code' => 'NSW', 'country' => 'Australia']);
+
+		$text = $this->textOfRender($this->allPermissions(), $user);
+
+		$this->assertStringContainsString('Sydney, NSW, Australia', $text);
+		$this->assertStringNotContainsString('Australia (', $text);
+	}
+
+	/**
+	 * Country AQ and continent AN are both "Antarctica" - the one pair in the lookup tables that
+	 * shares a name - and the row should not say it twice.
+	 */
+	public function test_a_continent_named_like_its_country_is_not_repeated()
+	{
+		$user = $this->pendingUser(['country' => 'Antarctica', 'continent' => 'Antarctica']);
+
+		$text = $this->textOfRender($this->allPermissions(), $user);
+
+		$this->assertStringContainsString('Antarctica', $text);
+		$this->assertStringNotContainsString('(Antarctica)', $text);
+	}
+
 	protected function allPermissions(): array
 	{
 		return ['general' => [

@@ -43,6 +43,13 @@ and below 5.4 a render had no `$xf` parameter — every permission check in the 
 `$xf.visitor`, so `UserInfoMacroTest` would test nothing. `TESTING.md` lists what each Feature
 test settles.
 
+**On a development install the macro tests render the `_output/` copy of a template, not the
+database's.** XenForo's development template watcher compares the compiled template's
+`FROM HASH` with the `_output/` file on every render and re-imports the file when they differ. So
+an edit to `_output/` is tested with no import, and an edit made only in the database — a
+mutation, say — is silently reverted at render time and the test sees the original. Mutate the
+`_output/` file, and restore it and `_metadata.json` afterwards.
+
 **`tests/Feature/RegistrationWritesUserDataTest` registers real users** through the real service,
 because the registration extension is the only writer of `xf_aqp_user_data`. It runs inside
 `UsesDatabaseTransactions` and leaves nothing behind, but it does write to the forum the suite
