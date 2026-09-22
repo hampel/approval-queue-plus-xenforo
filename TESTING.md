@@ -56,54 +56,54 @@ vendor/bin/phpunit --testsuite Unit
 vendor/bin/phpunit --filter CloudflareLocationTest
 ```
 
-**The Feature suite registers real users**, inside a transaction that is rolled back — it
-writes to whichever forum `$rootDir` points at, and leaves nothing behind. It is the only test of
-the registration extension, which is the only writer of the add-on's data.
+**What the Feature suite covers**, and it needs framework 5.4 or later:
+
+| test | settles |
+|---|---|
+| `RegistrationWritesUserDataTest` | a real registration writes the row, with and without Cloudflare headers |
+| `UserInfoMacroTest` | the queue macro as moderators see it — each of the email, IP and user agent rows hidden without its own permission, and a user with no recorded data |
+| `CloudflareTestPageTest` | the admin test page, with headers on the request, and its `option` permission check |
+| `TemplateModificationsTest` | all four modifications still apply |
+| `PruneUserDataTest` | whose data the prune deletes — approved users past the delay, never a user still in the queue |
+
+**Two of those write to whichever forum `$rootDir` points at** — the registration and prune tests
+use real rows — and both run inside a transaction that is rolled back, so nothing is left behind.
+
+**`TemplateModificationsTest` reads the apply count XenForo recorded when it last compiled each
+template**, so it answers for the forum the suite points at: run it after upgrading that forum,
+not only after changing the add-on.
 
 **Read the per-suite counts, not just the exit code.** A test file whose name does not end
 `Test.php` is never collected, and the run still reports `OK`.
 
-**Confirm the template modifications still apply**, which no unit test can — XenForo records an
-apply count per modification when it compiles a template:
-
-```sql
-SELECT m.modification_key, m.template, l.apply_count
-FROM xf_template_modification AS m
-LEFT JOIN xf_template_modification_log AS l ON (l.modification_id = m.modification_id)
-WHERE m.addon_id = 'Hampel/ApprovalQueuePlus'
-ORDER BY m.template, m.execution_order;
-```
-
-Four rows, apply counts 1, 1, 1 and 2. A zero or a missing log row means the modification no
-longer matches the core template.
-
 **Check the declared XF floor against an older install**, without installing anything there: load
 that install's app, read its core templates, and run each modification's `find` against them.
-`_output/template_modifications/public/*.json` holds the patterns. The match counts should equal
-the apply counts above. Do this whenever `require.XF` changes or a supported XenForo version is
-released.
+`_output/template_modifications/public/*.json` holds the patterns. Every modification should
+match at least once, and `approvalQueuePlusPageContainerReverse` twice. Do this whenever
+`require.XF` changes or a supported XenForo version is released.
 
 ## Needs a human
 
-None of these can be settled from a shell, and the first two are the add-on's whole purpose.
+None of these can be settled from a shell.
 
-1. **The queue display.** Enable manual approval in the user registration options, register an
-   account, and open the approval queue as a moderator. Expect username, email, joined, last
-   activity, registration IP, location, time zones and user agent — each one subject to the
-   viewing moderator's permissions, which is itself worth checking with a second, less privileged
-   moderator.
+1. **The queue as a page.** The suite renders the macro and checks every row and permission
+   gate, but not the page around it: whether it sits where it should in `approval_item_user`,
+   and how it looks. Enable manual approval in the user registration options, register an
+   account, and open the approval queue as a moderator.
 2. **Real Cloudflare headers.** The suite proves the map matches what Cloudflare *documents*, not
    that Cloudflare sends it. Only a registration through a real Cloudflare zone with
    *Rules → Transform Rules → Managed Transforms → Add visitor location headers* enabled settles
-   that, and the add-on's own ACP page under *Checks and Tests* is the place to look — it dumps
-   whatever arrived on that request.
+   that, and the add-on's own admin page under *Tools > Checks and Tests* is the place to look —
+   it dumps whatever arrived on that request, and is the only place continent is shown.
 3. **The sort-order option.** Set *Default Queue Order* to descending, reload the forum index, and
-   confirm the approval-queue link has gained the order and direction parameters.
+   confirm the approval-queue link has gained the order and direction parameters. The suite shows
+   the modification applies, not what the link then says.
 4. **The upgrade path from the currently published version**, not from the last tag — they are not
    the same thing. Install the published zip into a forum that is *not* a development install,
    then upgrade it with the new one.
 5. **The post-upgrade clean-up job.** `Setup::postUpgrade()` queues XenForo's file clean-up on XF
    2.3 and later. An upgrade that reports success proves only that the extraction worked; run the
    job queue afterwards and re-check the site and the server error log.
-6. **The prune, against data that is old enough to prune.** A development forum usually has none,
-   so the cron does nothing and reports nothing — which looks exactly like success.
+6. **The scheduled clean-up itself.** The suite proves whose data the prune deletes, not that the
+   cron fires. It runs on the last day of each month, so on a live forum nothing happens until
+   then — which looks exactly like success.

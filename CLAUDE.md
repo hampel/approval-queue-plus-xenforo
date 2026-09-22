@@ -37,8 +37,11 @@ PHPUnit kills another add-on's test run. Nothing here is needed at runtime, so n
 declared.
 
 `tests/TestCase.php` sets `$addonsToLoad = ['Hampel/ApprovalQueuePlus']`, so the suite boots a
-real XF app with only this add-on active. **That needs framework 5.0 or later**: below it, this
-add-on's extensions on pre-2.3 class names were silently not applied in an isolated suite.
+real XF app with only this add-on active. **The suite needs framework 5.4 or later.** Below 5.0
+this add-on's extensions on pre-2.3 class names were silently not applied in an isolated suite,
+and below 5.4 a render had no `$xf` parameter — every permission check in the queue macro reads
+`$xf.visitor`, so `UserInfoMacroTest` would test nothing. `TESTING.md` lists what each Feature
+test settles.
 
 **`tests/Feature/RegistrationWritesUserDataTest` registers real users** through the real service,
 because the registration extension is the only writer of `xf_aqp_user_data`. It runs inside
