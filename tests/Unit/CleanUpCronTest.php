@@ -22,6 +22,26 @@ class CleanUpCronTest extends TestCase
 		CleanUp::runDailyCleanup();
 	}
 
+	/**
+	 * A cleared delay box reads as 0, which would put the cut-off at "now" and take every
+	 * approved user's data. The ACP spinbox has a minimum of 1, so 0 can only mean the value is
+	 * missing or unusable — never a deliberate "prune immediately".
+	 */
+	public function test_the_prune_is_skipped_when_the_delay_is_unusable()
+	{
+		foreach (['', 'soon', null] as $delay)
+		{
+			$this->setOption('approvalQueuePlusUserAgentCleanUp', ['enabled' => '1', 'delay' => $delay]);
+
+			$this->mockRepository('Hampel\ApprovalQueuePlus:UserData', function ($mock)
+			{
+				$mock->expects()->pruneUserData()->never();
+			});
+
+			CleanUp::runDailyCleanup();
+		}
+	}
+
 	public function test_the_prune_is_skipped_when_the_option_is_off()
 	{
 		$this->setOption('approvalQueuePlusUserAgentCleanUp', ['enabled' => '0', 'delay' => '7']);
