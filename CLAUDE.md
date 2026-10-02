@@ -81,6 +81,12 @@ Everything displayed comes from `xf_aqp_user_data`, and exactly one thing writes
 Cloudflare country code) and `cf_location` (a `JSON_ARRAY` holding whatever Cloudflare headers
 were present).
 
+**None of the three is required, and `user_agent` is the one that matters.**
+`Request::getUserAgent()` returns `false` when the header is absent, so making it required made
+the row fail validation and took the whole registration with it — which anything scripted met and
+no browser ever did. An empty value means the client sent no header, and the display macro omits
+the row.
+
 So a row exists only for accounts that registered through the normal registration service while
 the add-on was installed. Accounts created in the ACP, imported, or registered before installation
 have none, and every consumer has to cope with that: the `AqpData` relation added to
@@ -118,8 +124,11 @@ suggest:
   `dom: [-1]` — the last day of each month, at 04:26 — while the entry and the method are both
   named for a daily run. Renaming the method would be an artifact change as well as a code one;
   the schedule is the thing to read, not the name.
-- **`getDelay()` returns `0` for a non-numeric value**, which puts the cut-off at *now* and prunes
-  every approved user's row. Reachable if the delay box is cleared while the option stays on.
+- **A delay of `0` means "do not prune", not "prune now".** `getDelay()` returns `0` for a missing
+  or non-numeric value — a cleared delay box — and the cut-off that produces is *now*, which would
+  take every approved user's row. The ACP spinbox has a minimum of 1, so `0` is never deliberate;
+  the cron returns early below 1. `getDelay()` still reports the option faithfully, and
+  `pruneUserData($cutOff)` still honours a cut-off passed to it.
 
 The guard belongs in the cron method rather than in the repository: `pruneUserData($cutOff)` takes
 an explicit cut-off so it can still be called deliberately, and the option is about the scheduled

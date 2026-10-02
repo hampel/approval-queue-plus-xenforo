@@ -33,9 +33,9 @@ class UserDataCleanUpOptionTest extends TestCase
 	}
 
 	/**
-	 * A non-numeric delay yields 0, which puts the prune cut-off at "now" and takes every
-	 * approved user's row. Reachable by clearing the delay box while the option stays on, so
-	 * this pins the behaviour rather than endorsing it — change it here first.
+	 * A non-numeric delay yields 0. That is a faithful read of a cleared delay box, and it is the
+	 * cron that refuses to prune on it — see `CleanUpCronTest`. Changing this to return something
+	 * else would move the decision to a place that cannot see whether a prune was asked for.
 	 */
 	public function test_a_non_numeric_delay_yields_zero()
 	{
