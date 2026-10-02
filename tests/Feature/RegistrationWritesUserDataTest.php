@@ -75,6 +75,25 @@ class RegistrationWritesUserDataTest extends TestCase
 		$this->assertSame([], $row['cf_location']);
 	}
 
+	/**
+	 * `Request::getUserAgent()` returns false when the header is absent — a scripted or API
+	 * registration, or a client that strips it. The row must still be written, or this add-on
+	 * refuses the registration on the forum's behalf.
+	 */
+	public function test_a_registration_with_no_user_agent_header_still_succeeds()
+	{
+		$this->requestFrom([
+			'REMOTE_ADDR'       => '203.0.113.11',
+			'HTTP_CF_IPCOUNTRY' => 'AU',
+		]);
+
+		$user = $this->register();
+		$row = $this->storedRowFor($user);
+
+		$this->assertSame('', $row['user_agent'], 'an absent header is recorded as empty, not refused');
+		$this->assertSame('AU', $row['iso_code'], 'the location this add-on did receive is still kept');
+	}
+
 	protected function requestFrom(array $server): void
 	{
 		$server += ['REQUEST_METHOD' => 'POST'];

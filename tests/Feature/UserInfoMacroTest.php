@@ -147,6 +147,21 @@ class UserInfoMacroTest extends TestCase
 		$this->assertStringNotContainsString('(Antarctica)', $text);
 	}
 
+	/**
+	 * A client that sent no User-Agent header leaves the column empty. The row must be omitted
+	 * rather than rendered with a blank value beside its label.
+	 */
+	public function test_an_empty_user_agent_renders_no_row()
+	{
+		$user = $this->pendingUser();
+		$user->AqpData->user_agent = '';
+
+		$text = $this->textOfRender($this->allPermissions(), $user);
+
+		$this->assertStringContainsString('PendingUser', $text);
+		$this->assertStringNotContainsString((string) \XF::phrase('approval_queue_plus_user_agent'), $text);
+	}
+
 	protected function allPermissions(): array
 	{
 		return ['general' => [
