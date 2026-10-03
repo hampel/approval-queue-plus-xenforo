@@ -177,8 +177,28 @@ each is reachable from a version still in the wild.
 `postUpgrade()` calls `enqueuePostUpgradeCleanUp()` only on XF 2.3+ (`\XF::$versionId >= 2030000`),
 because the method does not exist below that.
 
-`addon.json` declares `"legacy_addon_id": "ModeratedUsers"`: this add-on upgrades in place from the
-XF 2.0 add-on of that name.
+### The legacy upgrade runs the steps, not `install()`
+
+`addon.json` declares `"legacy_addon_id": "ModeratedUsers"` — the **XF1** add-on, unprefixed, which
+this one upgrades in place from. `AddOn::__construct()` matches an uninstalled add-on to an
+installed record carrying that id, so on such a site the "installed version" is the XF1 add-on's
+`version_id`, and XenForo runs the **upgrade** path. `install()` never fires.
+
+That decides which code creates the table, and it is not the obvious one:
+
+- The XF1 add-on declared `version_id="1"` and no install callback, so it had no schema at all — it
+  was template modifications only.
+- `StepRunnerUpgradeTrait` resumes at installed `version_id + 1`, so from `1` **every** step runs.
+- `upgrade3050170Step1()` finds none of the three historical table names and falls to its final
+  `else { $this->createTables(); }`. **That branch is the only thing that creates the table on a
+  legacy upgrade.** Deleting it as redundant — "`install()` handles a fresh install" — would leave
+  a converted XF1 site with no table, and the add-on fatals on the first registration.
+- `upgrade3060011Step1()` finds no `general/viewUserAgents` permission and returns early, which is
+  correct: the add-on's own data import creates the prefixed one afterwards.
+
+`preUpgrade()` renames the installed record to this add-on's id, and
+`DataManager::updateRelatedIds()` rewrites `addon_id` on every artifact type **before** the steps
+run — so a step that filters on `addon_id` still matches on this path.
 
 ## Versioning and packaging
 
