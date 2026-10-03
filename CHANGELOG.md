@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 3.6.2 (2026-10-04)
+
+- fixed: registration failed for any client that sent no `User-Agent` header — browsers always
+  send one, so ordinary sign-ups were unaffected, but a scripted or API registration was refused
+- fixed: clearing the *Delete User Agent data after* box no longer deletes every approved user's
+  recorded data on the next scheduled clean up
+
 ## 3.6.1 (2026-09-22)
 
 - the Cloudflare location in the Approval Queue now ends with the continent — for example
