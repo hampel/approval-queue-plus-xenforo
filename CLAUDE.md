@@ -58,10 +58,16 @@ changing one, or it reports on the previous version.
 **`tests/Feature/RegistrationWritesUserDataTest` registers real users** through the real service,
 because the registration extension is the only writer of `xf_aqp_user_data`. It runs inside
 `UsesDatabaseTransactions` and leaves nothing behind, but it does write to the forum the suite
-points at. It also drops strict SQL mode for its own connection: another add-on on a development
-forum may add a `NOT NULL` column with no default to a core table, which an isolated app leaves
-out of its `INSERT`, and strict mode then rejects the registration before this add-on's code
-runs. The test asserts every value this add-on stores, so the relaxation cannot hide a defect here.
+points at.
+
+**It needs strict SQL mode to be satisfiable on that forum, and that is deliberate.** An isolated
+test application loads only this add-on, so a `NOT NULL` column with no default that some other
+add-on has added to a core table is absent from XenForo's `INSERT`, and strict mode rejects the
+registration before any of this add-on's code runs. The failure is
+`MySQL query error [1364]`, naming that column. The suite dropped strict mode for its own
+connection until 2026-10-10 to get past exactly that; it no longer does, because the column is the
+other add-on's defect and absorbing it here hides the next one. The error names the column, which
+names the add-on to report it to.
 
 **`build.json` strips `vendor/`, `tests/`, `phpunit.xml`, the Composer manifests, `TESTING.md` and
 both Claude files from the build output**, then moves every remaining root `*.md` up to the zip

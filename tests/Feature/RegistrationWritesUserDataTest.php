@@ -34,8 +34,6 @@ class RegistrationWritesUserDataTest extends TestCase
 			'requireDob'        => false,
 			'requireLocation'   => false,
 		]));
-
-		$this->relaxStrictModeForForeignColumns();
 	}
 
 	public function test_registration_records_the_user_agent_and_cloudflare_location()
@@ -135,34 +133,5 @@ class RegistrationWritesUserDataTest extends TestCase
 		$row['cf_location'] = json_decode($row['cf_location'], true);
 
 		return $row;
-	}
-
-	/**
-	 * Another add-on on a development forum may add a NOT NULL column with no default to a core
-	 * table that registration writes. An isolated test application has not loaded that add-on,
-	 * so XenForo leaves the column out of its INSERT and strict mode rejects the whole row
-	 * before this add-on's code is reached. Dropping strict mode for this connection lets MySQL
-	 * fill such a column with its implicit default instead. On a forum with no such column it
-	 * changes nothing.
-	 *
-	 * It cannot hide a defect in this add-on: every value this add-on stores is asserted on
-	 * above, and its entity supplies all four of its columns explicitly.
-	 */
-	protected function relaxStrictModeForForeignColumns(): void
-	{
-		$db = $this->app()->db();
-		$original = $db->fetchOne('SELECT @@SESSION.sql_mode');
-
-		$relaxed = implode(',', array_filter(explode(',', $original), function ($mode)
-		{
-			return !in_array($mode, ['STRICT_ALL_TABLES', 'STRICT_TRANS_TABLES'], true);
-		}));
-
-		$db->query('SET SESSION sql_mode = ' . $db->quote($relaxed));
-
-		$this->beforeApplicationDestroyed(function () use ($db, $original)
-		{
-			$db->query('SET SESSION sql_mode = ' . $db->quote($original));
-		});
 	}
 }
