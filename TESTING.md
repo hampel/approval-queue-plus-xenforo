@@ -56,6 +56,20 @@ vendor/bin/phpunit --testsuite Unit
 vendor/bin/phpunit --filter CloudflareLocationTest
 ```
 
+**The add-on also checks itself on any forum it is installed on**, without the suite:
+
+```bash
+php cmd.php approval-queue-plus:config              # what it is set up to show, and what it holds
+php cmd.php approval-queue-plus:validate            # whether it can; 1 if anything failed
+php cmd.php approval-queue-plus:validate --strict   # 2 for warnings only, for a monitor
+```
+
+`config` writes nothing and `validate` sends nothing, so both are safe on a production forum. The
+one check that cannot be made from a shell is whether Cloudflare *really* sends the headers, and
+`validate` answers it twice over from what it can see: it runs the header map against a synthetic
+request carrying all ten of them, and it reports how many recorded registrations carry a location.
+None of them, on a forum with rows, is the signal that the managed transform is off.
+
 **What the Feature suite covers**, and it needs framework 5.20 or later:
 
 | test | settles |
@@ -125,4 +139,10 @@ None of these can be settled from a shell.
 6. **The scheduled clean-up itself.** The suite proves whose data the prune deletes, not that the
    cron fires. It runs every morning at 04:26 — `dom: [-1]` is XenForo's "any day", not "the last
    day" — so on a live forum the window is a day. A run that declines, because the option is off
-   or its delay is unusable, writes nothing and looks exactly like a run that pruned nothing.
+   or its delay is unusable, writes nothing and looks exactly like a run that pruned nothing;
+   `approval-queue-plus:validate` is what tells those apart without waiting for a morning.
+7. **Both commands on XenForo 2.2.** Reading 2.2's source is not this check. Its fork of
+   `symfony/console` knows only the eight basic colours and throws on `gray`, which took another
+   add-on's command down on every 2.2 forum for three releases. Run both in a 2.2 sandbox, and
+   read `--strict`'s exit code through `docker exec` rather than `xf-cli`, which does not return
+   it.

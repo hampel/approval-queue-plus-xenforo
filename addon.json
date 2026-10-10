@@ -16,6 +16,10 @@
         "XF": [
             "2020070",
             "XenForo 2.2.0+"
+        ],
+        "php": [
+            "7.4",
+            "PHP 7.4+"
         ]
     },
     "icon": "fa-check-circle"

@@ -247,6 +247,68 @@ That decides which code creates the table, and it is not the obvious one:
 `DataManager::updateRelatedIds()` rewrites `addon_id` on every artifact type **before** the steps
 run — so a step that filters on `addon_id` still matches on this path.
 
+## Two self-check commands, and why an add-on this small has them
+
+`approval-queue-plus:config` prints what this forum is configured to show and what it has
+recorded; `approval-queue-plus:validate` proves it can. Both are read-only — this add-on sends
+nothing, and the one destructive thing it owns is counted rather than run — so `--unattended` is
+accepted for a uniform monitor command line and changes nothing.
+
+| | all fine | warnings only | any failure |
+|---|---|---|---|
+| `validate` | 0 | 0 | 1 |
+| `validate --strict` | 0 | 2 | 1 |
+
+**The reason it earns them is the clean-up, not the options.** Of the three questions that decide
+this, only one is a yes: nothing here is opaque, but the prune is unattended work that deletes
+rows, every morning. And the guard added in 3.6.2 made its worst misconfiguration *safe* by
+returning early, which also made it **silent** — a forum whose delay box is empty now has a
+clean-up that will never run, with nothing anywhere saying so. `validate` reports that as a
+`[fail]`, and an add-on with the clean-up switched off entirely as a `[warn]`, because nothing is
+broken and every recorded user agent and IP is being kept for ever.
+
+**The Cloudflare check is the other half of the case.** It runs the real header map against a
+synthetic request carrying all ten headers as Cloudflare spells them, which is the only thing
+short of a live zone that can catch a misspelt header name — a CLI request and a development forum
+both record nothing either way, which is exactly how one went unnoticed through several releases.
+Reintroducing that misspelling now produces `a synthetic Cloudflare request produced 9 of 11
+values - missing continent_code, continent` and exit 1.
+
+### What this costs, and what it constrains
+
+**The add-on now declares `require.php` 7.4**, which is above what XenForo 2.2 itself enforces
+(7.0). `Cli/RendersReport.php` uses typed properties, and the version-support policy's second rule
+— drop a version the moment supporting it needs a conditional — makes stripping them the wrong
+answer. So a forum on XenForo 2.2 with PHP 7.0 to 7.3 can run 3.6.2 and not this. That is a
+support change and belongs in the CHANGELOG as one, not as a fix. `README.md` says the same, and
+`composer.json` carries no runtime `require` at all, so there is no platform pin to keep in step —
+nothing ships from it.
+
+**`Cli/RendersReport.php` is a copy, not a dependency.** It is `Hampel/Monolog`'s file with the
+namespace changed and nothing else, and its method names are those of `hampel/console-report`.
+Do not improve it here: correct it there and take it again. It cannot be the package because
+that needs PHP 8.3, and it cannot be a shared add-on because XenForo puts every add-on's Composer
+classes into one loader and the first registered wins.
+
+### Three traps, each fatal for every command on the forum
+
+XenForo loads every add-on's command classes simply to list them, so one that cannot load stops
+`cmd.php` for every add-on — not only this one. `tests/Unit/CommandClassesTest.php` covers all
+three:
+
+- **Extend Symfony's `Command`, never `XF\Cli\Command\AbstractCommand`**, which
+  `xf-make:cli-command` scaffolds and which does not exist on XenForo 2.2.
+- **Never name a helper `run()`** — it collides with `Command::run()`, which is public and is what
+  Symfony calls.
+- **Never write a grey colour tag.** XenForo 2.2 ships its own fork of `symfony/console` that
+  knows only the eight basic colours and throws on `gray`. Grey goes through
+  `RendersReport::muted()`, which falls back.
+
+**Neither command has been run on XenForo 2.2 yet.** Reading 2.2's source is not the same check —
+the colour trap survived exactly that in another add-on — so a 2.2 sandbox run belongs in the
+release, and `--strict`'s exit code has to be read through `docker exec` rather than `xf-cli`,
+which does not return it.
+
 ## Versioning and packaging
 
 `addon.json` carries `version_id` and `version_string` and they must be bumped together — the

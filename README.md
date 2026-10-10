@@ -6,8 +6,10 @@ queue's default sort order.
 
 ## Requirements
 
-XenForo 2.2.0 or later. No PHP requirement beyond the one XenForo itself enforces for your
-version, and no third-party libraries.
+XenForo 2.2.0 or later, and PHP 7.4 or later. No third-party libraries.
+
+The PHP requirement is above what XenForo 2.2 itself enforces, which is PHP 7.0. It is there for
+the two command-line self-check commands, whose shared report rendering uses typed properties.
 
 ## What it adds
 
