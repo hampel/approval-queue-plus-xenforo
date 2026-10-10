@@ -305,10 +305,15 @@ three:
   knows only the eight basic colours and throws on `gray`. Grey goes through
   `RendersReport::muted()`, which falls back.
 
-**Neither command has been run on XenForo 2.2 yet.** Reading 2.2's source is not the same check —
-the colour trap survived exactly that in another add-on — so a 2.2 sandbox run belongs in the
-release, and `--strict`'s exit code has to be read through `docker exec` rather than `xf-cli`,
-which does not return it.
+**Both commands have been run on XenForo 2.2** — 2.2.19 Patch 2 on PHP 7.4, the floor this add-on
+declares — and the colour trap is cleared rather than merely unmet: a probe there confirmed that
+2.2's bundled `symfony/console` really does throw on `gray`, so `config` rendering its whole report
+is `RendersReport::muted()`'s fallback working rather than 2.2 happening to accept grey. Reading
+2.2's source is not that check; it is the check the trap survived in another add-on.
+
+**Re-run both in a 2.2 sandbox whenever this code changes**, and read any exit code that matters
+through `docker exec` rather than `xf-cli`, which does not return it — under the contract above a
+warning arriving as `1` instead of `2` reads as a failure.
 
 ## Versioning and packaging
 

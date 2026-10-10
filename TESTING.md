@@ -70,6 +70,14 @@ one check that cannot be made from a shell is whether Cloudflare *really* sends 
 request carrying all ten of them, and it reports how many recorded registrations carry a location.
 None of them, on a forum with rows, is the signal that the managed transform is off.
 
+**Run both on XenForo 2.2 before any release that touches them**, in a sandbox — reading 2.2's
+source is not that check. Its fork of `symfony/console` knows only the eight basic colours and
+throws on `gray`, which took another add-on's command down on every 2.2 forum for three releases.
+Read `--strict`'s exit code through `docker exec` rather than a CLI wrapper, which does not return
+it: under the contract above, a warning arriving as 1 instead of 2 reads as a failure. Done for
+3.6.3 on 2.2.19 Patch 2 and PHP 7.4, where the colour fallback was confirmed to be engaging rather
+than unnecessary.
+
 **What the Feature suite covers**, and it needs framework 5.20 or later:
 
 | test | settles |
@@ -141,8 +149,3 @@ None of these can be settled from a shell.
    day" — so on a live forum the window is a day. A run that declines, because the option is off
    or its delay is unusable, writes nothing and looks exactly like a run that pruned nothing;
    `approval-queue-plus:validate` is what tells those apart without waiting for a morning.
-7. **Both commands on XenForo 2.2.** Reading 2.2's source is not this check. Its fork of
-   `symfony/console` knows only the eight basic colours and throws on `gray`, which took another
-   add-on's command down on every 2.2 forum for three releases. Run both in a 2.2 sandbox, and
-   read `--strict`'s exit code through `docker exec` rather than `xf-cli`, which does not return
-   it.
