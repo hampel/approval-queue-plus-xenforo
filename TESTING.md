@@ -56,7 +56,7 @@ vendor/bin/phpunit --testsuite Unit
 vendor/bin/phpunit --filter CloudflareLocationTest
 ```
 
-**What the Feature suite covers**, and it needs framework 5.19 or later:
+**What the Feature suite covers**, and it needs framework 5.20 or later:
 
 | test | settles |
 |---|---|
@@ -65,12 +65,19 @@ vendor/bin/phpunit --filter CloudflareLocationTest
 | `CloudflareTestPageTest` | the admin test page, with headers on the request, and its `option` permission check |
 | `TemplateModificationsTest` | all four modifications still apply |
 | `PruneUserDataTest` | whose data the prune deletes — approved users past the delay, never a user still in the queue |
-| `UserDeletionRemovesUserDataTest` | the other way a row leaves — deleting a user takes it, through XenForo's own clean-up job |
+| `UserDeletionRemovesUserDataTest` | the other way a row leaves — the clean-up after a deletion takes it, through XenForo's own code |
 
 **Three of those write to whichever forum `$rootDir` points at** — the registration, prune and
 user-deletion tests use real rows — and all three run inside a transaction that is rolled back, so
 nothing is left behind. From framework 5.7 that rollback is checked rather than assumed: a test
 whose transaction something has committed now fails instead of silently leaving its rows.
+
+**A test holding a transaction is in a race for any row the forum itself writes**, which is not
+theoretical here: running XenForo's whole user-deletion clean-up job inside one deadlocked against
+the live forum on the data registry row that holds the approval queue's unapproved counts, and
+only after passing several times. `UserDeletionRemovesUserDataTest` therefore runs the single
+clean-up step that consumes this add-on's entry and none of the others. Prefer the narrowest piece
+of core that still proves the thing.
 
 **The suite needs strict SQL mode to be satisfiable on that forum.** An isolated application loads
 only this add-on, so a `NOT NULL` column with no default that another add-on has added to a core

@@ -11,9 +11,9 @@ use XF\Util\Ip;
  * modification swaps into `approval_item_user` - so rendering it is the nearest a test gets to
  * what a moderator sees.
  *
- * Needs framework 5.6 or later: 5.4 for the `$xf` parameter, without which every permission check
- * in this macro reads a null `$xf.visitor` and the gated rows render their else branch, and 5.6
- * for `assertNoUnresolvedPhrases()`.
+ * Needs framework 5.20 or later: 5.4 for the `$xf` parameter, without which every permission
+ * check in this macro reads a null `$xf.visitor` and the gated rows render their else branch, 5.6
+ * for `assertNoUnresolvedPhrases()`, and 5.20 for passing it more than one prefix.
  */
 class UserInfoMacroTest extends TestCase
 {
@@ -219,12 +219,13 @@ class UserInfoMacroTest extends TestCase
 		$this->assertNoTemplateErrors();
 
 		// A phrase XenForo cannot find renders as its own key, which no assertion below would
-		// notice - they look for values, not labels. This covers all of this add-on's phrases on
-		// every render in this class, including the one survivor from before the naming
-		// convention. Checked on the raw markup: neither prefix appears in it as ordinary text,
-		// so the macro's own template name cannot be mistaken for an unresolved phrase.
-		$this->assertNoUnresolvedPhrases($html, 'hampel_aqp_');
-		$this->assertNoUnresolvedPhrases($html, 'approval_queue_plus_');
+		// notice - they look for values, not labels. Both prefixes in one call, so the failure
+		// names every unresolved key rather than only those under whichever prefix came first:
+		// `hampel_aqp_` and the one survivor from before that convention, which cannot be
+		// renamed without losing any customisation an installed forum has made. Checked on the
+		// raw markup: neither prefix appears in it as ordinary text, so the macro's own template
+		// name cannot be mistaken for an unresolved phrase.
+		$this->assertNoUnresolvedPhrases($html, ['hampel_aqp_', 'approval_queue_plus_']);
 
 		return trim(preg_replace('/\s+/', ' ', strip_tags($html)));
 	}

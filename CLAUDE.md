@@ -37,7 +37,7 @@ PHPUnit kills another add-on's test run. Nothing here is needed at runtime, so n
 declared.
 
 `tests/TestCase.php` sets `$addonsToLoad = ['Hampel/ApprovalQueuePlus']`, so the suite boots a
-real XF app with only this add-on active. **The suite needs framework 5.19 or later, and the
+real XF app with only this add-on active. **The suite needs framework 5.20 or later, and the
 constraint says so**, because three of its releases each fixed something that made a test here
 pass while proving nothing:
 
