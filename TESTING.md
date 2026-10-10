@@ -123,5 +123,6 @@ None of these can be settled from a shell.
    2.3 and later. An upgrade that reports success proves only that the extraction worked; run the
    job queue afterwards and re-check the site and the server error log.
 6. **The scheduled clean-up itself.** The suite proves whose data the prune deletes, not that the
-   cron fires. It runs on the last day of each month, so on a live forum nothing happens until
-   then — which looks exactly like success.
+   cron fires. It runs every morning at 04:26 — `dom: [-1]` is XenForo's "any day", not "the last
+   day" — so on a live forum the window is a day. A run that declines, because the option is off
+   or its delay is unusable, writes nothing and looks exactly like a run that pruned nothing.

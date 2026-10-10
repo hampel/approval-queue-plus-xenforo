@@ -150,26 +150,36 @@ leaves a declaration that still passes while publishing a value. Every assertion
 outside its loop — with an empty declaration the loops run zero times, and a test whose only
 assertions are inside one asserts nothing while counting as coverage.
 
-## The clean-up cron is not daily, whatever it is called
+## The clean-up cron runs daily, and `dom: [-1]` is why
 
 `Cron\CleanUp::runDailyCleanup()` returns early unless `Option\UserDataCleanUp::isEnabled()`, then
 calls `Repository\UserData::pruneUserData()`, which deletes rows whose user is now `valid` and
-registered on or before `\XF::$time - delay * 86400`. Two things about it are not what the names
-suggest:
+registered on or before `\XF::$time - delay * 86400`.
 
-- **It runs monthly.** `_output/cron_entries/approvalQueuePlusCleanup.json` has `day_type: dom`,
-  `dom: [-1]` — the last day of each month, at 04:26 — while the entry and the method are both
-  named for a daily run. Renaming the method would be an artifact change as well as a code one;
-  the schedule is the thing to read, not the name.
-- **A delay of `0` means "do not prune", not "prune now".** `getDelay()` returns `0` for a missing
-  or non-numeric value — a cleared delay box — and the cut-off that produces is *now*, which would
-  take every approved user's row. The ACP spinbox has a minimum of 1, so `0` is never deliberate;
-  the cron returns early below 1. `getDelay()` still reports the option faithfully, and
-  `pruneUserData($cutOff)` still honours a cut-off passed to it.
+**`dom: [-1]` means "any day", not "the last day".** XenForo's own docblock on
+`XF\Service\CronEntry\CalculateNextRunService::calculateNextRunTime()` states the convention:
+*"-1 means 'any', any other value means on those specific occurances"*. So
+`_output/cron_entries/approvalQueuePlusCleanup.json` — `day_type: dom`, `dom: [-1]`, hour 4,
+minute 26 — schedules the prune **every day at 04:26**, and the method's name is right. Confirmed
+against that service: from midday on a 10th it answers the 11th and then the 12th, where
+`dom: [31]` answers the 31st.
 
-The guard belongs in the cron method rather than in the repository: `pruneUserData($cutOff)` takes
-an explicit cut-off so it can still be called deliberately, and the option is about the scheduled
-path.
+This file said it ran monthly until 2026-10-10, which read as a deliberate finding and was simply
+a misreading of `-1`. `dom` is validated against the range 1 to 31 in
+`XF\Entity\CronEntry::verifyRunRules()`, so `-1` is not a day of the month at all — and XenForo
+uses `['-1']` as the default for a new entry, which is a daily one.
+
+**A delay of `0` means "do not prune", not "prune now".** `getDelay()` returns `0` for a missing
+or non-numeric value — a cleared delay box — and the cut-off that produces is *now*, which would
+take every approved user's row. The ACP spinbox has a minimum of 1, so `0` is never deliberate;
+the cron returns early below 1. `getDelay()` still reports the option faithfully, and
+`pruneUserData($cutOff)` still honours a cut-off passed to it.
+
+**The daily schedule is what sets the stakes on that guard.** Before it, a forum whose delay box
+was empty lost every approved user's recorded data on the next run — which was the next morning,
+not the end of the month, and again each morning after as new rows accrued. The guard belongs in
+the cron method rather than in the repository: `pruneUserData($cutOff)` takes an explicit cut-off
+so it can still be called deliberately, and the option is about the scheduled path.
 
 ## Display is four template modifications, and two of them are fragile
 
