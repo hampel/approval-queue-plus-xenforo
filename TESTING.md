@@ -56,7 +56,7 @@ vendor/bin/phpunit --testsuite Unit
 vendor/bin/phpunit --filter CloudflareLocationTest
 ```
 
-**What the Feature suite covers**, and it needs framework 5.4 or later:
+**What the Feature suite covers**, and it needs framework 5.19 or later:
 
 | test | settles |
 |---|---|
@@ -65,9 +65,18 @@ vendor/bin/phpunit --filter CloudflareLocationTest
 | `CloudflareTestPageTest` | the admin test page, with headers on the request, and its `option` permission check |
 | `TemplateModificationsTest` | all four modifications still apply |
 | `PruneUserDataTest` | whose data the prune deletes — approved users past the delay, never a user still in the queue |
+| `UserDeletionRemovesUserDataTest` | the other way a row leaves — deleting a user takes it, through XenForo's own clean-up job |
 
-**Two of those write to whichever forum `$rootDir` points at** — the registration and prune tests
-use real rows — and both run inside a transaction that is rolled back, so nothing is left behind.
+**Three of those write to whichever forum `$rootDir` points at** — the registration, prune and
+user-deletion tests use real rows — and all three run inside a transaction that is rolled back, so
+nothing is left behind. From framework 5.7 that rollback is checked rather than assumed: a test
+whose transaction something has committed now fails instead of silently leaving its rows.
+
+**The suite needs strict SQL mode to be satisfiable on that forum.** An isolated application loads
+only this add-on, so a `NOT NULL` column with no default that another add-on has added to a core
+table is absent from XenForo's `INSERT` and the registration is rejected with
+`MySQL query error [1364]` before any of this add-on's code runs. The error names the column,
+which names the add-on whose schema to fix; this suite deliberately does not work around it.
 
 **`TemplateModificationsTest` reads the apply count XenForo recorded when it last compiled each
 template**, so it answers for the forum the suite points at: run it after upgrading that forum,

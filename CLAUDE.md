@@ -37,11 +37,23 @@ PHPUnit kills another add-on's test run. Nothing here is needed at runtime, so n
 declared.
 
 `tests/TestCase.php` sets `$addonsToLoad = ['Hampel/ApprovalQueuePlus']`, so the suite boots a
-real XF app with only this add-on active. **The suite needs framework 5.4 or later.** Below 5.0
-this add-on's extensions on pre-2.3 class names were silently not applied in an isolated suite,
-and below 5.4 a render had no `$xf` parameter — every permission check in the queue macro reads
-`$xf.visitor`, so `UserInfoMacroTest` would test nothing. `TESTING.md` lists what each Feature
-test settles.
+real XF app with only this add-on active. **The suite needs framework 5.19 or later, and the
+constraint says so**, because three of its releases each fixed something that made a test here
+pass while proving nothing:
+
+- **below 5.0** this add-on's extensions on pre-2.3 class names were silently not applied in an
+  isolated suite, so a test of the registration write path ran XenForo's own class;
+- **below 5.4** a render had no `$xf` parameter, and every permission check in the queue macro
+  reads `$xf.visitor` — the gated rows rendered their else branch and `UserInfoMacroTest`
+  tested nothing;
+- **below 5.7** `UsesDatabaseTransactions` rolled back nothing when the code under test had
+  committed, leaving the rows in the forum. Any DDL commits implicitly, including the `TRUNCATE`
+  XenForo runs when it compiles a template — which this suite provokes, for the reason in the
+  next paragraph.
+
+5.6's `assertNoUnresolvedPhrases()` and 5.19's `createUserAccount()` and
+`actingAsAdministrator()` are called directly, so a lower resolve fatals rather than misleads.
+`TESTING.md` lists what each Feature test settles.
 
 **On a development install the macro tests render the `_output/` copy of a template, not the
 database's.** XenForo's development template watcher compares the compiled template's

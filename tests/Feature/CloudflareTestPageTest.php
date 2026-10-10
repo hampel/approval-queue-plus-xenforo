@@ -22,7 +22,7 @@ class CloudflareTestPageTest extends TestCase
 
 	public function test_an_admin_with_the_option_permission_sees_the_headers_that_arrived()
 	{
-		$this->actingAsAdmin(['option' => true]);
+		$this->actingAsAdministrator(['option' => true]);
 
 		$reply = $this->dispatch(self::ROUTE, 'admin', [], [
 			'HTTP_CF_IPCITY'      => 'Sydney',
@@ -46,7 +46,7 @@ class CloudflareTestPageTest extends TestCase
 
 	public function test_with_no_cloudflare_headers_the_page_renders_with_nothing_to_show()
 	{
-		$this->actingAsAdmin(['option' => true]);
+		$this->actingAsAdministrator(['option' => true]);
 
 		$reply = $this->dispatch(self::ROUTE, 'admin');
 
@@ -60,16 +60,10 @@ class CloudflareTestPageTest extends TestCase
 	 */
 	public function test_an_admin_without_the_option_permission_is_refused()
 	{
-		$this->actingAsAdmin([]);
+		$this->actingAsAdministrator([]);
 
 		$reply = $this->dispatch(self::ROUTE, 'admin');
 
 		$this->assertReplyIsError($reply, 403);
-	}
-
-	protected function actingAsAdmin(array $adminPermissions): void
-	{
-		$admin = $this->actingAsMember(['is_admin' => true]);
-		$this->setVisitorAdminPermissions($admin, $adminPermissions);
 	}
 }
