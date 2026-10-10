@@ -131,6 +131,25 @@ arrived on that request and exists to answer exactly that question.
 `Data\CountryCodes` turns `country_code` and `continent_code` into names, falling back to the raw
 code, and is reached as an add-on data object rather than instantiated.
 
+## The third listener declares that there is nothing to hide
+
+`Listener::adminApiRedaction()` answers the `hampel_admin_api_redaction` event with an empty entry
+keyed by this add-on's id. The add-on that defines that event returns a forum's option and
+`config.php` values with credentials removed, and it withholds the *text* settings of any add-on
+that has not declared — so an empty declaration is what moves this add-on's settings from "set" to
+shown, rather than hiding anything. Neither option is a credential: one is a queue sort order, the
+other an on/off switch and a number of days. The add-on reads no `config.php` keys at all.
+
+**It is not a dependency and must not become one.** An event that no installed add-on defines is
+never fired, so on a forum without that add-on the listener is inert — nothing goes in
+`addon.json`'s `require`, and nothing in the method refers to that add-on's namespace or classes.
+
+`SecretsDeclarationTest` checks the declaration against `_output/options/` rather than against
+itself, because the way this breaks is silent: renaming an option, or adding a credential later,
+leaves a declaration that still passes while publishing a value. Every assertion in it sits
+outside its loop — with an empty declaration the loops run zero times, and a test whose only
+assertions are inside one asserts nothing while counting as coverage.
+
 ## The clean-up cron is not daily, whatever it is called
 
 `Cron\CleanUp::runDailyCleanup()` returns early unless `Option\UserDataCleanUp::isEnabled()`, then

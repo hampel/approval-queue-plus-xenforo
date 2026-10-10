@@ -1,0 +1,9 @@
+{
+    "event_id": "hampel_admin_api_redaction",
+    "execute_order": 10,
+    "callback_class": "Hampel\\ApprovalQueuePlus\\Listener",
+    "callback_method": "adminApiRedaction",
+    "active": true,
+    "hint": "",
+    "description": "Declares this add-on's secrets to the Admin API"
+}
