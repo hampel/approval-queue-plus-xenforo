@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## 3.6.3 (2026-10-10)
+
+- now requires PHP 7.4 or later — above the PHP 7.0 that XenForo 2.2 itself requires, and needed
+  by the new command line checks below. XenForo 2.3 already requires PHP 7.2, so this affects only
+  a XenForo 2.2 forum still running PHP 7.3 or older
+- new: two command line checks. `approval-queue-plus:config` prints what the Approval Queue is set
+  up to show and what has been recorded; `approval-queue-plus:validate` checks that it all works —
+  that the queue's template modifications still apply, that the Cloudflare header map still
+  produces a location, that the *View User Agents* permission is present, and that the scheduled
+  clean up will run when it says it will. Neither command writes, deletes or sends anything, so
+  both are safe to run on a live forum
+- `approval-queue-plus:validate` exits 1 when a check failed and 0 otherwise, and `--strict` exits
+  2 for warnings alone, so a monitoring script can watch a forum's configuration
+- `approval-queue-plus:validate` reports a clean up that can never run: switching it on while
+  leaving *Delete User Agent data after* empty makes the scheduled prune decline every time, which
+  is safe but silent
+- the add-on now tells the Admin API add-on that none of its settings are credentials, so they can
+  be reported rather than withheld
+
 ## 3.6.2 (2026-10-04)
 
 - fixed: registration failed for any client that sent no `User-Agent` header — browsers always
