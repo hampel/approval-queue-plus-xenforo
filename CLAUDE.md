@@ -164,8 +164,9 @@ minute 26 — schedules the prune **every day at 04:26**, and the method's name 
 against that service: from midday on a 10th it answers the 11th and then the 12th, where
 `dom: [31]` answers the 31st.
 
-This file said it ran monthly until 2026-10-10, which read as a deliberate finding and was simply
-a misreading of `-1`. `dom` is validated against the range 1 to 31 in
+A daily prune is what was intended — confirmed by Simon on 2026-10-10 — so nothing about the
+entry needs changing. This file said it ran monthly until that date, which read as a deliberate
+finding and was simply a misreading of `-1`. `dom` is validated against the range 1 to 31 in
 `XF\Entity\CronEntry::verifyRunRules()`, so `-1` is not a day of the month at all — and XenForo
 uses `['-1']` as the default for a new entry, which is a daily one.
 
