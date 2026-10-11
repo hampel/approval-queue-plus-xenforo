@@ -50,6 +50,63 @@ class PruneUserDataTest extends TestCase
 		$this->assertTrue($this->hasData($justInside));
 	}
 
+	/**
+	 * The prune deletes in batches, because the number of eligible rows is bounded by nothing: a
+	 * forum whose clean-up has been declining every morning - which is what an unusable delay has
+	 * produced since 3.6.2 - has a row for every registration it has ever approved. Fetching them
+	 * all hydrates an entity per row plus its user, measured at 5.3 KB each, so a large enough
+	 * backlog exhausts PHP's memory and the clean-up then prunes nothing, every morning, silently.
+	 *
+	 * Two things have to hold, and the first alone would pass against the unbatched version:
+	 * everything eligible still goes, and the batch size is honoured rather than ignored. The
+	 * second is what the query count is for - with a batch of one, each row costs its own pair of
+	 * statements, so a run that quietly fetched everything at once cannot produce more queries
+	 * than a run that batched.
+	 */
+	public function test_a_backlog_larger_than_one_batch_is_pruned_completely()
+	{
+		$users = [];
+		for ($i = 0; $i < 5; $i++)
+		{
+			$users[] = $this->userWithData('valid', \XF::$time - 30 * self::DAY);
+		}
+		$stillWaiting = $this->userWithData('moderated', \XF::$time - 30 * self::DAY);
+
+		$db = $this->app()->db();
+
+		$before = $db->getQueryCount();
+		$this->repo()->pruneUserData(null, 1);
+		$oneAtATime = $db->getQueryCount() - $before;
+
+		foreach ($users as $user)
+		{
+			$this->assertFalse($this->hasData($user),
+				'a batched prune left an approved user\'s data behind, so the loop stopped early');
+		}
+		$this->assertTrue($this->hasData($stillWaiting),
+			'the user still in the queue lost their data, which the batching must not change');
+
+		// the same work again, in one batch, for something to compare the count against
+		$users = [];
+		for ($i = 0; $i < 5; $i++)
+		{
+			$users[] = $this->userWithData('valid', \XF::$time - 30 * self::DAY);
+		}
+
+		$before = $db->getQueryCount();
+		$this->repo()->pruneUserData(null, 100);
+		$allAtOnce = $db->getQueryCount() - $before;
+
+		foreach ($users as $user)
+		{
+			$this->assertFalse($this->hasData($user));
+		}
+
+		$this->assertGreaterThan($allAtOnce, $oneAtATime,
+			"pruning five rows one at a time took {$oneAtATime} queries and in a single batch"
+				. " {$allAtOnce}, so the batch size is being ignored");
+	}
+
 	protected function userWithData(string $state, int $registerDate): User
 	{
 		$suffix = bin2hex(random_bytes(4));
