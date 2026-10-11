@@ -78,6 +78,23 @@ it: under the contract above, a warning arriving as 1 instead of 2 reads as a fa
 3.6.3 on 2.2.19 Patch 2 and PHP 7.4, where the colour fallback was confirmed to be engaging rather
 than unnecessary.
 
+**To look at the queue, fill it rather than registering accounts by hand.** `Hampel/Seeder` makes
+members awaiting approval, and this add-on carries a seeder that gives them the row the queue
+displays:
+
+```bash
+php cmd.php seeder:run Hampel/ApprovalQueuePlus:Queue --batch=aqp-look -p pending=12 -p bare=2
+php cmd.php seeder:list                             # what is seeded, and whose
+php cmd.php seeder:clean aqp-look --force           # when the looking is done
+```
+
+Every display branch is in one run: a full Cloudflare location, no user agent, no location, no
+continent (the rows from before 3.6.0, which nothing backfills), and members with no row at all.
+The dates are spread, which is what makes the sort order visible. Seeding writes real content, so
+a sandbox is the place for anything that counts rows; the forum you are going to *look* at is the
+exception. `Seed/` and `Factory/` are development tooling and `build.json` keeps them out of the
+release.
+
 **What the Feature suite covers**, and it needs framework 5.21 or later:
 
 | test | settles |
@@ -88,6 +105,7 @@ than unnecessary.
 | `TemplateModificationsTest` | all four modifications still apply |
 | `PruneUserDataTest` | whose data the prune deletes — approved users past the delay, never a user still in the queue |
 | `UserDeletionRemovesUserDataTest` | the other way a row leaves — the clean-up after a deletion takes it, through XenForo's own code |
+| `ApprovalQueuePageTest` | the queue as XenForo assembles it — that the macro is *reached*, which the macro test cannot say, and that the email appears once rather than twice |
 
 **Three of those write to whichever forum `$rootDir` points at** — the registration, prune and
 user-deletion tests use real rows — and all three run inside a transaction that is rolled back, so
@@ -126,10 +144,11 @@ match at least once, and `approvalQueuePlusPageContainerReverse` twice. Do this 
 
 None of these can be settled from a shell.
 
-1. **The queue as a page.** The suite renders the macro and checks every row and permission
-   gate, but not the page around it: whether it sits where it should in `approval_item_user`,
-   and how it looks. Enable manual approval in the user registration options, register an
-   account, and open the approval queue as a moderator.
+1. **How the queue looks.** `ApprovalQueuePageTest` now settles that the macro is reached and
+   what it renders, so what is left is genuinely visual: where the block sits in the item, how it
+   reads beside XenForo's own fields, and whether anything wraps badly. Seed a batch as above and
+   open the approval queue as a moderator — no need to enable manual approval or register
+   anything.
 2. **Real Cloudflare headers.** The suite proves the map matches what Cloudflare *documents*, not
    that Cloudflare sends it. Only a registration through a real Cloudflare zone with
    *Rules → Transform Rules → Managed Transforms → Add visitor location headers* enabled settles
@@ -137,7 +156,9 @@ None of these can be settled from a shell.
    it dumps whatever arrived on that request.
 3. **The sort-order option.** Set *Default Queue Order* to descending, reload the forum index, and
    confirm the approval-queue link has gained the order and direction parameters. The suite shows
-   the modification applies, not what the link then says.
+   the modification applies, not what the link then says. A seeded batch gives the queue members
+   registered across several weeks, so following the link shows whether the order really reverses
+   rather than only whether the parameters are there.
 4. **The upgrade path from the currently published version**, not from the last tag — they are not
    the same thing. Install the published zip into a forum that is *not* a development install,
    then upgrade it with the new one.
