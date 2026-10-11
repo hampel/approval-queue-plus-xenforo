@@ -182,6 +182,26 @@ not the end of the month, and again each morning after as new rows accrued. The 
 the cron method rather than in the repository: `pruneUserData($cutOff)` takes an explicit cut-off
 so it can still be called deliberately, and the option is about the scheduled path.
 
+**The prune deletes in batches, and asks for ids rather than rows.** Nothing bounds how many rows
+are eligible: a forum that has had the clean-up switched off, or that has had an unusable delay
+since 3.6.2 and so declines every morning, holds a row for every registration it has ever
+approved. The original single `fetch()` cost 5.3 KB a row — 26 MB at five thousand — so a large
+enough backlog exhausts the 128 MB `XF::setMemoryLimit()` guarantees, and a PHP fatal in a cron
+entry prunes nothing, reports nothing, and does the same again the next morning.
+
+**Batching alone did not fix that, which is why the loop asks for columns.** Looping `fetch()` over
+a limited finder still reached 28 MB at five thousand rows, because the entity manager
+identity-maps everything it hydrates and no batch is ever released. `fetchColumns('user_id')` runs
+the same query through `fetchRaw()` and builds no entity at all, so the conditions stay in
+`findPrunableUserData()` — where both commands count them — while peak memory is flat in the size
+of the backlog: 6 MB at five thousand rows and 6 MB at ten and a half thousand. Do not simplify it
+back to one statement, and do not reach for `clearEntityCache()` instead; the cheap version is the
+one that hydrates nothing.
+
+`$batchSize` is a parameter rather than a constant so that a test can prove the loop runs more than
+once — pruning five rows one at a time must cost more queries than doing it in a single batch, which
+is what stops the test passing against a version that ignores the batch size entirely.
+
 ## Display is four template modifications, and two of them are fragile
 
 They are the whole user-facing surface, and a XenForo upgrade breaks them silently: the queue

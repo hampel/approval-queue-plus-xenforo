@@ -103,7 +103,7 @@ release.
 | `UserInfoMacroTest` | the queue macro as moderators see it — each of the email, IP and user agent rows hidden without its own permission, the location row with and without a continent, and a user with no recorded data |
 | `CloudflareTestPageTest` | the admin test page, with headers on the request, and its `option` permission check |
 | `TemplateModificationsTest` | all four modifications still apply |
-| `PruneUserDataTest` | whose data the prune deletes — approved users past the delay, never a user still in the queue |
+| `PruneUserDataTest` | whose data the prune deletes — approved users past the delay, never a user still in the queue — and that a backlog larger than one batch goes completely |
 | `UserDeletionRemovesUserDataTest` | the other way a row leaves — the clean-up after a deletion takes it, through XenForo's own code |
 | `ApprovalQueuePageTest` | the queue as XenForo assembles it — that the macro is *reached*, which the macro test cannot say, and that the email appears once rather than twice |
 
@@ -133,6 +133,18 @@ test would report on the version before the edit.
 
 **Read the per-suite counts, not just the exit code.** A test file whose name does not end
 `Test.php` is never collected, and the run still reports `OK`.
+
+**Run the suite in a sandbox before believing a failure, and before believing a pass.** Two things
+measured on 2026-10-11 and 2026-10-12:
+
+- **A shared forum makes this suite intermittently red through no fault of its own.** Two of six
+  consecutive runs failed with `MySQL query error [1213]`, and the deadlock InnoDB recorded was
+  between two *test* transactions — this suite's and another add-on's — both inserting into
+  `xf_user_group_relation` on a supremum gap lock. Any two concurrent user creations can do it, so
+  it says nothing about this add-on; a sandbox run is the one that answers.
+- **A container is not this box.** `GLOB_BRACE` is undefined where the system glob has no brace
+  expansion, which includes musl, so two tests that pass here died inside an Alpine container.
+  They use two globs now. The sandbox is the only PHP here that is not glibc.
 
 **Check the declared XF floor against an older install**, without installing anything there: load
 that install's app, read its core templates, and run each modification's `find` against them.
