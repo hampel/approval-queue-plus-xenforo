@@ -37,7 +37,7 @@ PHPUnit kills another add-on's test run. Nothing here is needed at runtime, so n
 declared.
 
 `tests/TestCase.php` sets `$addonsToLoad = ['Hampel/ApprovalQueuePlus']`, so the suite boots a
-real XF app with only this add-on active. **The suite needs framework 5.20 or later, and the
+real XF app with only this add-on active. **The suite needs framework 5.21 or later, and the
 constraint says so**, because three of its releases each fixed something that made a test here
 pass while proving nothing:
 
@@ -51,9 +51,9 @@ pass while proving nothing:
   XenForo runs when it compiles a template — which this suite provokes, for the reason in the
   next paragraph.
 
-5.6's `assertNoUnresolvedPhrases()` and 5.19's `createUserAccount()` and
-`actingAsAdministrator()` are called directly, so a lower resolve fatals rather than misleads.
-`TESTING.md` lists what each Feature test settles.
+5.6's `assertNoUnresolvedPhrases()`, 5.19's `createUserAccount()` and `actingAsAdministrator()`,
+5.20's two-prefix form of the first, and 5.21's `runRunnerStep()` are all called directly, so a
+lower resolve fatals rather than misleads. `TESTING.md` lists what each Feature test settles.
 
 **On a development install the macro tests render the `_output/` copy of a template, not the
 database's.** XenForo's development template watcher compares the compiled template's

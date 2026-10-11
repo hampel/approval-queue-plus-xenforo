@@ -78,7 +78,7 @@ it: under the contract above, a warning arriving as 1 instead of 2 reads as a fa
 3.6.3 on 2.2.19 Patch 2 and PHP 7.4, where the colour fallback was confirmed to be engaging rather
 than unnecessary.
 
-**What the Feature suite covers**, and it needs framework 5.20 or later:
+**What the Feature suite covers**, and it needs framework 5.21 or later:
 
 | test | settles |
 |---|---|

@@ -14,9 +14,9 @@ use Tests\TestCase;
  * each condition string, so a listener given the wrong signature, the wrong condition or the
  * wrong event name fails here and nowhere else.
  *
- * Needs framework 5.19 or later for `createUserAccount()`. A user built with
- * `createEntity('XF:User')` has no profile, option, privacy or authentication record, and
- * deletion reads all four.
+ * Needs framework 5.21 or later: 5.19 for `createUserAccount()`, because a user built with
+ * `createEntity('XF:User')` has no profile, option, privacy or authentication record and deletion
+ * reads all four, and 5.21 for `runRunnerStep()`.
  */
 class UserDeletionRemovesUserDataTest extends TestCase
 {
@@ -71,21 +71,22 @@ class UserDeletionRemovesUserDataTest extends TestCase
 	 * `MySQL query error [1213]: Deadlock found`, taking the transaction with it. It passed the
 	 * first several times it was run, which is what such a race looks like.
 	 *
-	 * So the test runs the one step that consumes the listener's entry and none of the others.
-	 * Reflection is the only way in - the steps are protected, and `MultiPartRunnerTrait` offers
-	 * no way to select one - but the service is still built by the container, so the event fires
-	 * from its real constructor and the deletion is performed by core's own code.
+	 * So the test runs the one step that consumes the listener's entry and none of the others. The
+	 * service is still built by the container, so the event fires from its real constructor and
+	 * the deletion is performed by core's own code.
+	 *
+	 * `runRunnerStep()` loops the step until it reports it has finished, which is why nothing here
+	 * asserts on its return value: a step returns a resume offset rather than a result, and a step
+	 * that batches can ask to be resumed for reasons that have nothing to do with running out of
+	 * time. `stepDeleteContent()` completes in one call when given no time limit, but asserting
+	 * that would be asserting core's internals. The row assertions either side are the proof, and
+	 * the helper checks the step name against the runner's own `getSteps()`, so a step renamed in
+	 * a later XenForo fails here by name instead of silently not running.
 	 */
 	protected function runTheCleanUpStepThatConsumesTheDeletes($userId, $username): void
 	{
 		$service = $this->app()->service('XF:User\DeleteCleanUp', $userId, $username);
 
-		$step = new \ReflectionMethod($service, 'stepDeleteContent');
-		$step->setAccessible(true);
-
-		$this->assertNull(
-			$step->invoke($service, null, 0),
-			'the step reported more work to do, so it may not have reached this table'
-		);
+		$this->runRunnerStep($service, 'stepDeleteContent');
 	}
 }
