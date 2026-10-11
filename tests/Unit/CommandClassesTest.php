@@ -70,6 +70,22 @@ class CommandClassesTest extends TestCase
 	}
 
 	/**
+	 * Every PHP file under `Cli/`, in two globs rather than one with a brace pattern.
+	 *
+	 * `GLOB_BRACE` is not defined on every platform PHP runs on - it needs the system's glob to
+	 * support brace expansion, which musl does not, so on an Alpine container the constant does
+	 * not exist and both callers died with `Undefined constant GLOB_BRACE` while passing on this
+	 * box. Found running this suite inside a sandbox, which is where the add-on's own release zip
+	 * is tested.
+	 */
+	protected function cliFiles(): array
+	{
+		$dir = dirname(__DIR__, 2) . '/Cli';
+
+		return array_merge(glob($dir . '/*.php') ?: [], glob($dir . '/Command/*.php') ?: []);
+	}
+
+	/**
 	 * XenForo 2.2 ships its own fork of symfony/console, which knows only the eight basic colours
 	 * and throws on `gray` - taking the command down at its first annotation. Grey goes through
 	 * RendersReport::muted(), which falls back.
@@ -78,7 +94,7 @@ class CommandClassesTest extends TestCase
 	{
 		$offenders = [];
 
-		foreach (glob(dirname(__DIR__, 2) . '/Cli/{*.php,Command/*.php}', GLOB_BRACE) ?: [] AS $file)
+		foreach ($this->cliFiles() AS $file)
 		{
 			$source = file_get_contents($file);
 
@@ -97,7 +113,7 @@ class CommandClassesTest extends TestCase
 	 */
 	public function test_the_colour_sweep_has_files_to_read()
 	{
-		$files = glob(dirname(__DIR__, 2) . '/Cli/{*.php,Command/*.php}', GLOB_BRACE) ?: [];
+		$files = $this->cliFiles();
 
 		$names = array_map(function ($file)
 		{
