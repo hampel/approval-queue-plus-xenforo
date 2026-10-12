@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 3.6.4 (2026-10-12)
+
+- fixed: the scheduled clean up could exhaust PHP's memory and delete nothing, on a forum holding
+  a large backlog of recorded registration data. It now deletes in batches, and asks the database
+  only for the user ids it needs rather than loading whole rows, so how much one run can get
+  through no longer depends on how much has accumulated
+- a backlog builds up on any forum that has the clean up switched off, or that has had *Delete
+  User Agent data after* left empty — the clean up declines to run in either case, which is safe
+  but silent. Switching it on, or filling that box in, is what sends the first run at the whole
+  backlog, so this fix matters most on a forum where nothing has been pruned for a long time.
+  `approval-queue-plus:config` reports how many rows are eligible now
+
 ## 3.6.3 (2026-10-10)
 
 - now requires PHP 7.4 or later — above the PHP 7.0 that XenForo 2.2 itself requires, and needed
