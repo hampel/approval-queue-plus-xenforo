@@ -138,10 +138,13 @@ test would report on the version before the edit.
 measured on 2026-10-11 and 2026-10-12:
 
 - **A shared forum makes this suite intermittently red through no fault of its own.** Two of six
-  consecutive runs failed with `MySQL query error [1213]`, and the deadlock InnoDB recorded was
-  between two *test* transactions — this suite's and another add-on's — both inserting into
-  `xf_user_group_relation` on a supremum gap lock. Any two concurrent user creations can do it, so
-  it says nothing about this add-on; a sandbox run is the one that answers.
+  consecutive runs failed with `MySQL query error [1213]`, and the deadlock was between two *test*
+  transactions — this suite's and another add-on's. Saving a new member makes XenForo rebuild its
+  group relations, and that rebuild deletes from `xf_user_group_relation` by user id before
+  inserting: for an id that has never existed the delete matches nothing, so it holds a supremum
+  gap lock for the rest of the transaction and the other transaction's insert waits on it. Any two
+  concurrent user creations collide that way, so it says nothing about this add-on; a sandbox run
+  is the one that answers.
 - **A container is not this box.** `GLOB_BRACE` is undefined where the system glob has no brace
   expansion, which includes musl, so two tests that pass here died inside an Alpine container.
   They use two globs now. The sandbox is the only PHP here that is not glibc.
