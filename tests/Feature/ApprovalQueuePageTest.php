@@ -23,8 +23,13 @@ use Tests\TestCase;
  * for the member this test made. What is absent for a member with no recorded data is settled in
  * `UserInfoMacroTest`, where the render holds one user and nothing else.
  *
- * Needs framework 5.21 or later: 5.19 for `createUserAccount()`, 5.2 for `dispatch()`, and 5.20
- * for the two-prefix `assertNoUnresolvedPhrases()`.
+ * Needs framework 5.23 or later: 5.19 for `createUserAccount()`, 5.2 for `dispatch()`, 5.20 for
+ * the two-prefix `assertNoUnresolvedPhrases()`, and 5.23 for the failure messages below - a
+ * message passed to `assertSeeText()` before it was discarded without a word.
+ *
+ * 5.23 also made `assertNoUnresolvedPhrases()` read the page parameters as well as the rendered
+ * HTML, which is worth more here than it looks: this page sets its title through `<xf:title>`, and
+ * a phrase that came out unresolved there was invisible to the old call.
  */
 class ApprovalQueuePageTest extends TestCase
 {
@@ -72,16 +77,25 @@ class ApprovalQueuePageTest extends TestCase
 		// assertSeeText() rather than assertStringContainsString(): PHPUnit's own string
 		// assertions print the whole subject, and the subject here is a page carrying up to fifty
 		// queue items - a miss printed ten thousand characters with the value at the end of them.
-		// It takes no failure message, so what a miss means is here instead: the first says the
-		// member this test made is not on the page, so nothing after it answers for anything; the
-		// rest say the macro was not reached, which means approvalQueuePlusApprovalItemUser has
-		// stopped matching the macro call it replaces. That is the failure a XenForo upgrade
-		// causes, and it is silent everywhere else.
-		$this->assertSeeText($html, $user->username);
+		// The third argument is the failure message, which framework 5.23 added to these
+		// assertions; before it, one passed here was discarded in silence and said nothing.
+		$this->assertSeeText($html, $user->username,
+			'the member this test registered is not in the queue at all, so nothing below here'
+				. ' answers for anything');
 
-		$this->assertSeeText($html, self::USER_AGENT);
-		$this->assertSeeText($html, 'Sydney, NSW, Australia (Oceania)');
-		$this->assertSeeText($html, 'Australia/Sydney');
+		$this->assertSeeText($html, self::USER_AGENT,
+			'the user agent is absent, which means the macro was not reached:'
+				. ' approvalQueuePlusApprovalItemUser has stopped matching the call it replaces in'
+				. ' approval_item_user. That is the failure a XenForo upgrade causes, and it is'
+				. ' silent everywhere else');
+
+		$this->assertSeeText($html, 'Sydney, NSW, Australia (Oceania)',
+			'the location row is absent or assembled differently - the macro builds it from'
+				. ' cf_location, with the country and continent names resolved through'
+				. ' Data\CountryCodes');
+
+		$this->assertSeeText($html, 'Australia/Sydney',
+			'the timezone is absent from the location block');
 	}
 
 	/**

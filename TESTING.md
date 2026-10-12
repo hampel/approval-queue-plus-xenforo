@@ -95,7 +95,7 @@ a sandbox is the place for anything that counts rows; the forum you are going to
 exception. `Seed/` and `Factory/` are development tooling and `build.json` keeps them out of the
 release.
 
-**What the Feature suite covers**, and it needs framework 5.21 or later:
+**What the Feature suite covers**, and it needs framework 5.23 or later:
 
 | test | settles |
 |---|---|
