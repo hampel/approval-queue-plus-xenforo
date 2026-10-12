@@ -163,7 +163,9 @@ None of these can be settled from a shell.
    what it renders, so what is left is genuinely visual: where the block sits in the item, how it
    reads beside XenForo's own fields, and whether anything wraps badly. Seed a batch as above and
    open the approval queue as a moderator — no need to enable manual approval or register
-   anything.
+   anything. **Confirmed for 3.6.4** on 2026-10-12, against a seeded batch of ten pending members.
+   Re-check after any XenForo upgrade: the block is assembled by two template modifications
+   against a core template, and both fail by rendering nothing.
 2. **Real Cloudflare headers.** The suite proves the map matches what Cloudflare *documents*, not
    that Cloudflare sends it. Only a registration through a real Cloudflare zone with
    *Rules → Transform Rules → Managed Transforms → Add visitor location headers* enabled settles
@@ -173,7 +175,10 @@ None of these can be settled from a shell.
    confirm the approval-queue link has gained the order and direction parameters. The suite shows
    the modification applies, not what the link then says. A seeded batch gives the queue members
    registered across several weeks, so following the link shows whether the order really reverses
-   rather than only whether the parameters are there.
+   rather than only whether the parameters are there. **Confirmed for 3.6.4** on 2026-10-12, with
+   the order really reversing rather than only the parameters being present. Re-check after any
+   XenForo upgrade: `approvalQueuePlusPageContainerReverse` is an exact `str_replace` on a literal
+   in `PAGE_CONTAINER` and is the most brittle thing here.
 4. **The upgrade path from the currently published version**, not from the last tag — they are not
    the same thing. Install the published zip into a forum that is *not* a development install,
    then upgrade it with the new one.
