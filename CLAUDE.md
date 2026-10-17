@@ -270,6 +270,21 @@ That decides which code creates the table, and it is not the obvious one:
 - `upgrade3060011Step1()` finds no `general/viewUserAgents` permission and returns early, which is
   correct: the add-on's own data import creates the prefixed one afterwards.
 
+**This was analysis until 2026-10-17, and is now proved on a real conversion.** A disposable clone
+of a production XF1 forum, core-upgraded 1.5.x to XF 2.3.13 with its `ModeratedUsers` record left
+as `active = 0, is_legacy = 1`, then upgraded with the 3.6.4 release zip so that XenForo took the
+upgrade path rather than `install()`. The table was created with exactly its four columns, the
+prefixed permission exists, the unprefixed one does not, and the legacy record was taken over —
+`version_id` 3060470, `active` 1, `is_legacy` 0 — rather than left beside a second row. So the
+final `else` really is what creates the table, and nothing about those branches is redundant.
+
+**The rename is still unproved, and the reason is worth keeping.** That forum's XF1 add-on was
+template modifications only, with no schema and no permission, so `upgrade3060011Step1()` had
+nothing to find and only its early return was exercised. Proving the rename needs a legacy forum
+that actually granted `viewUserAgents`, or a fixture that inserts the permission and a grant before
+the upgrade. A pass there is not evidence about the rename; the XF2-to-XF2 path is where that has
+been proved end to end.
+
 `preUpgrade()` renames the installed record to this add-on's id, and
 `DataManager::updateRelatedIds()` rewrites `addon_id` on every artifact type **before** the steps
 run — so a step that filters on `addon_id` still matches on this path.
